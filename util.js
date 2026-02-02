@@ -1,3 +1,25 @@
+function parseStringForSuffix(str) {
+  const multipliers = {
+    k: 1e3,
+    M: 1e6,
+    G: 1e9,
+    T: 1e12,
+    m: 1e-3,
+    u: 1e-6,
+    n: 1e-9,
+    p: 1e-12,
+  };
+  const match = str.match(/^(\d*\.?\d+)([kMGTPmunp]?)$/);
+  if (!match) return null;
+  const value = parseFloat(match[1]);
+  const suffix = match[2];
+  const multiplier = multipliers[suffix] || 1;
+  return { value, multiplier };
+}
+
+
+let on_dt_list = [];
+
 // Provides globalThis.format(fmt, ...args) no matter what.
 function format(fmt, ...args) {
   let i = 0;

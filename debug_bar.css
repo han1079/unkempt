@@ -1,0 +1,117 @@
+/* Debug sidebar styling and behavior */
+/* Handles the right sidebar debug area functionality */
+
+.debug_area {
+  position: sticky;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: auto;
+  align-items: auto;
+  font-size: 12px;
+  background: var(--accent-bg);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--standard-border-radius);
+  border-spacing: 2px; 
+  padding: 10px 10px 10px 10px;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.button_area {
+  display: flex;
+  top: 10px;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.debug_button {
+  flex: 0 0 100px;
+  font-size: 12px;
+  height: 40px;
+  width: 100px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.debug_bar {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.minicon_area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.debug_body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.debug_scroll {
+  height: 200px;
+  scrollbar-gutter: stable;
+  overflow: auto;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--standard-border-radius);
+}
+
+.debug_table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  background: var(--bg);
+  font-size: 11px;
+}
+
+.debug_table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: var(--border-width) solid var(--border);
+  z-index: 1;
+}
+
+.debug_table th, .debug_table td {
+  padding: 4px 6px;
+  vertical-align: top;
+  text-align: left;
+  word-break: break-word;
+  border-right: var(--border-width) solid var(--border);
+}
+
+.debug_table th {
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.debug_table td {
+  color: var(--text);
+}
+
+/* Mobile adjustments */
+/* @media (max-width: 900px) {
+  .debug_area {
+    position: relative;
+    top: auto;
+    max-height: 300px;
+  }
+  
+  .debug_scroll {
+    height: 150px;
+  }
+} */

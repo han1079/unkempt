@@ -21,14 +21,12 @@ function run_every_frame(list_of_functions) {
 function main() {
     switch_to_hash();
     init_inputs();
-    var on_dt_list = [];
-    on_dt_list.push(renderDebug);
     run_every_frame(on_dt_list);
 }
 
+
 window.addEventListener("DOMContentLoaded", main);
 
-window.addEventListener("pointermove", (e) => {MouseXY.x = e.clientX; MouseXY.y = e.clientY; MouseXY.mouseInside = true});
 window.addEventListener("mouseout", (e) => {if (e.relatedTarget === null) {MouseXY.mouseInside = false;}});
-window.addEventListener("click", (e) => {nearest["Nearest"] = e.target.closest("div");});
+window.addEventListener("click", (e) => {nearest["Nearest"] = e.target.classList;});
 document.getElementById("Wireframe Toggle").addEventListener("click", () => {document.documentElement.classList.toggle("wireframe")});

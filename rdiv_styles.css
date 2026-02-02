@@ -1,0 +1,125 @@
+/* Styles for resistor divider calculator components */
+
+.greyed_out {
+    background-color: rgba(189, 188, 188, 0.797) !important;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.7rem;
+    z-index:4000;
+}
+
+
+.rdiv_column input[type="number"] {
+    width: 60px;
+    box-sizing: border-box;
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--standard-border-radius);
+    padding: 6px 6px;
+    background: var(--bg);
+    color: var(--text);
+    text-align: center;
+    margin: 0 0;
+    vertical-align: middle;
+    transition: border-color 0.2s ease;
+}
+
+.rdiv_column input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(var(--accent), 0.2);
+}
+
+.rdiv_entries {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.rdiv_column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1;
+    max-width: 1fr;
+    text-align: center;
+    padding: 10px;
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--standard-border-radius);
+    background: var(--accent-bg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rdiv_column h3 {
+    margin: 0 0 16px 0;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.rdiv_column table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    background: var(--bg);
+    border-radius: var(--standard-border-radius);
+    overflow: hidden;
+    border: var(--border-width) solid var(--border);
+}
+
+.rdiv_column th,
+.rdiv_column td {
+    background: var(--accent-bg);
+    color: var(--text);
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    border-bottom: var(--border-width) solid var(--border);
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+
+.rdiv_column button {
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--standard-border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: auto;
+}
+
+.rdiv_column button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(var(--accent), 0.3);
+}
+
+.rdiv_center_content {
+    min-width: 0;
+    max-width: 1200px; 
+}
+/* Responsive adjustments */
+/* @media (max-width: 1400px) {
+    .rdiv_entries {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .rdiv_column {
+        min-width: 400px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .rdiv_center_content {
+        min-width: 500px;
+        position: relative;
+        z-index:1;
+    }
+} */

@@ -7,6 +7,16 @@
  * - Avoid spreadsheet calls here; pure JS only.
  */
 
+function getBoxRelativeCoords(x, y, box) {
+  if (!isFiniteNumber(x) || !isFiniteNumber(y)) {
+    throw new Error("getBoxRelativeCoords: x and y must be finite numbers");
+  }
+  if (!box || typeof box !== "object") {
+    throw new Error("getBoxRelativeCoords: box must be an object");
+  }
+  return { x: x - box.left, y: y - box.top };
+}
+
 function isFiniteNumber(x) {
   return typeof x === "number" && Number.isFinite(x);
 }

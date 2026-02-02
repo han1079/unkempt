@@ -4,6 +4,7 @@ function switch_to_hash() {
 }
 
 function getCurrentRoute() {
+    console.log("Current hash:", location.hash);
     return location.hash.slice(1);
 }
 

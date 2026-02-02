@@ -1,267 +1,181 @@
-<!doctype html>
-<html>
-    <head>
+<!doctype html>        
+<html lang="en">
+
+<head>
+        <link rel="stylesheet" href="./industrial_orange_style.css">
+        <link rel="stylesheet" href="./katex.min.css">
+        <link rel="stylesheet" href="./wireframe.css">
+        <link rel="stylesheet" href="./main_layout.css">
+        <link rel="stylesheet" href="./debug_bar.css">
+        <link rel="stylesheet" href="./rdiv_styles.css">
+
         <meta charset="utf-8" />
         <title> Calculators </title>
         <script src = "https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
         <script src = "./katex.min.js" defer> </script>
+        <script src = "./util.js" defer></script>
+        <script src = "./ui_state_machine.js" defer> </script>
+        <script src = "./drawing_app.js" defer> </script>
         <script src = "./bracketed_newton.js" defer> </script>
         <script src = "./math_utils.js" defer> </script>
         <script src = "./rdiv.js" defer> </script>
         <script src = "./res_e_values.js" defer> </script>
-        <script src = "./util.js" defer></script>
+        <script src = "./navigation.js" defer> </script>
         <script src = "./debug.js" defer></script>
         <script src = "./main.js" defer>  </script>
-        <script src = "./navigation.js" defer> </script>
         <link rel="stylesheet" href="./katex.min.css">
         <link rel="stylesheet" href="./wireframe.css">
-        <style>
-            body {padding: 20px}
-             @font-face {
-                font-family: "KaTeX_Main";
-                src: url("./fonts/KaTeX_Main-Regular.ttf") format("truetype");
-                font-weight: 400;
-                font-style: normal;
-            }
-
-            @font-face {
-                font-family: "KaTeX_Main";
-                src: url("./fonts/KaTeX_Main-Bold.ttf") format("truetype");
-                font-weight: 700;
-                font-style: normal;
-            }
-
-            @font-face {
-                font-family: "KaTeX_Main";
-                src: url("./fonts/KaTeX_Main-Italic.ttf") format("truetype");
-                font-weight: 400;
-                font-style: italic;
-            }
-
-            @font-face {
-                font-family: "KaTeX_Main";
-                src: url("./fonts/KaTeX_Main-BoldItalic.ttf") format("truetype");
-                font-weight: 700;
-                font-style: italic;
-            }
-            html, body{
-                font-family: "KaTeX_Main", serif;
-            }
-
-            button, input, select {
-                font-family: inherit;
-                font-size: inherit;
-            }
-        </style>
+        
     </head>
 
-    <body>
-        <nav id="nav">
-            <a href="#home">Home</a>
-            <a href="#rdiv">Resistor Divider</a>
-        </nav>
-    <section data-route="home" id="Home">
-        <h2> Hello </h2>
-        <p> Click on the nav to change</p>
+    <body class="x-collapsible">
 
-        <div id="LatexH">
-        
+        <div class="overlay_container">
+            <svg id="overlay_svg" class="overlay_svg"></svg>
         </div>
 
-    </section>
-
-    <section data-route="rdiv" hidden>
-        <h2> Resistor Divider Calc</h2>
-        <p> Click on the nav to change</p>
-        <div class="rdiv_entries">
-            <div class="rdiv_fwd">
-            <h3> Calc Vout </h3>
-                <table id="rdiv_fwd_tbl">
-                    <tr><td>Vin</td><td><input type="number" data-key="rdiv_vin_fwd"></td></tr>
-                    <tr><td>Vout</td><td id="rdiv_vout_fwd"> N/A </td></tr>
-                    <tr><td>Rhigh</td><td><input type="number" data-key="rdiv_rh_fwd"></td></tr>
-                    <tr><td>Rlow</td><td><input type="number" data-key="rdiv_rl_fwd"></td></tr>
-                </table>
-                <button id="rdiv_fwd_tbl">Calculate</button>
+        <div class="full_page_container">
+            <div class="top-margin">
             </div>
-            <div class="rdiv_backward">
-                <h3> Calc Vin </h3>
-                <table id="rdiv_backward_tbl">
-                    <tr><td>Vin</td><td id="rdiv_vin_back"> N/A </td></tr>
-                    <tr><td>Vout</td><td><input type="number" data-key="rdiv_vout_back"></td></tr>
-                    <tr><td>Rhigh</td><td><input type="number" data-key="rdiv_rh_back"></td></tr>
-                    <tr><td>Rlow</td><td><input type="number" data-key="rdiv_rl_back"></td></tr>
-                </table>
-                <button id="rdiv_backward_tbl">Calculate</button>
+            <!-- 3-column layout wrapper -->
+            <div class="main-layout">
+                <!-- Left spacer (compresses first) -->
+                <div class="left-spacer">
+
+                <nav id="nav">
+                    <a href="#home">Home</a>
+                    <a href="#rdiv">Resistor Divider</a>
+                    <a href="#drawing">Drawing Area</a>
+                </nav>
+
+                </div>
+                
+                <!-- Center content area -->
+                <div class="center-content">
+                    <div data-route="home" id="Home">
+                        <div class="page_header">
+                            <h2> Welcome to the Calculator Suite </h2>
+                            <p> Use the navigation bar to select a calculator. More coming soon!</p>
+                        </div>
+                    </div>
+
+                    <div data-route="drawing" hidden>
+                        <div class="drawable_area">
+                            <style>
+                                .drawable_area {
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                overflow: visible;
+                                z-index: 1;
+                                background-color: rgb(255, 0, 0, 0.2);
+                            }
+                            </style>
+                            <svg id="drawing_svg" class="drawing_svg"></svg>
+                            <style>
+                                .drawing_svg {
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                top: 0;
+                                left: 0;
+                                overflow: visible;
+                                z-index: 2;
+                                pointer-events: none;
+                            }
+                            </style>
+                        </div>
+                    </div>
+                    <div data-route="rdiv" hidden>
+                        <div class="page_header">
+                            <h3> Resistor Divider Calc</h3>
+                            <p> Instructions Here -- </p>
+                        </div>
+                        <div class="rdiv_entries">
+                            <div class="rdiv_column">
+                            <h4><span id="vout_eq"></span>  </h4>
+                                <table id="rdiv_vout_tbl">
+                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
+                                    <tr><td><span class="vout">Vout</span></td><td class="greyed_out"> </td><td class="vout_result"> N/A </td></tr>
+                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
+                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
+                                </table>
+                                <button id="rdiv_vout_btn">Calculate</button>
+                            </div>
+                            <div class="rdiv_column">
+                                <h4><span id="vin_eq"></span> </h4>
+                                <table id="rdiv_vin_tbl">
+                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                                    <tr><td><span class="vin">Vin</span></td><td class="greyed_out"> </td><td class="vin_result"> N/A </td></tr>
+                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="5"></td><td class="vout_result"> None </td></tr>
+                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
+                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
+                                </table>
+                                <button id="rdiv_vin_btn">Calculate</button>
+                            </div>
+                            <div class="rdiv_column">
+                                <h4><span id="rl_eq"></span> </h4>
+                                <table id="rdiv_rl_tbl">
+                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
+                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result"> None </td></tr>
+                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
+                                    <tr><td><span class="rlow">Rlow</span></td><td class="greyed_out"></td><td class="rlow_result"> N/A </td></tr>
+                                </table>
+                                <button id="rdiv_rl_btn">Calculate</button>
+                            </div>
+                            <div class="rdiv_column">
+                                <h4><span id="rh_eq"></span> </h4>
+                                <table id="rdiv_rh_tbl">
+                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
+                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result"> None </td></tr>
+                                    <tr><td><span class="rhigh">Rhigh</span></td><td class="greyed_out"> </td><td class="rhigh_result"> N/A </td></tr>
+                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
+                                </table>
+                                <button id="rdiv_rh_btn">Calculate</button>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+                
+                <!-- Right sidebar (debug area - compresses last) -->
+                <div class="sidebar-container">
+                    <div class="debug_area">
+                        <div class="button_area">
+                            <button class="debug_button" id="Wireframe Toggle">
+                                <p> Wires </p>
+                            </button>
+                        </div>
+
+                        <div class="debug_bar">
+                            <div class="minicon_area">
+                                <table class="contable">
+                                    <tr><th id="minicon">DEFAULT</th></tr>
+                                </table>
+                            </div>
+
+                            <div class="debug_body">
+                                <div class="debug_scroll">
+                                    <table class="debug_table">
+                                        <thead>
+                                            <tr><th>Key</th><th>Value</th></tr>
+                                        </thead>
+                                        <tbody id="debug_rows"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="rdiv_lower_tbl">
-                <h3> Calc RLow </h3>
-                <table id="rdiv_lower">
-                    <tr><td>Vin</td><td><input type="number" data-key="rdiv_vin_low"></td></tr>
-                    <tr><td>Vout</td><td><input type="number" data-key="rdiv_vout_low"></td></tr>
-                    <tr><td>Rhigh</td><td><input type="number" data-key="rdiv_rh_low"></td></tr>
-                    <tr><td>Rlow</td><td id="rdiv_rl_low"> N/A </td></tr>
-                </table>
-                <button id="rdiv_lower">Calculate</button>
+            <div class="bottom-margin">
+
             </div>
-            <div class="rdiv_higher_tbl">
-                <h3> Calc RHigh </h3>
-                <table id="rdiv_higher">
-                    <tr><td>Vin</td><td><input type="number" data-key="rdiv_vin_high"></td></tr>
-                    <tr><td>Vout</td><td><input type="number" data-key="rdiv_vout_high"></td></tr>
-                    <tr><td>Rhigh</td><td id="rdiv_rh_high"> N/A </td></tr>
-                    <tr><td>Rlow</td><td><input type="number" data-key="rdiv_rl_high"></td></tr>
-                </table>
-                <button id="rdiv_higher">Calculate</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="debug_area">
-
-    <div class="button_area">
-        <button class="debug_button" id="Wireframe Toggle">
-            <p> Wires </p>
-        </button>
-    </div>
-
-
-    <div class="debug_bar">
-
-        <div class="minicon_area">
-            <table class="contable">
-                <tr><th id="minicon">DEFAULT</th></tr>
-            </table>
-        </div>
-
-        <div class="debug_body">
-            <div class="debug_scroll">
-                <table class="debug_table">
-                    <thead>
-                        <tr><th>Key</th><th>Value</th></tr>
-                    </thead>
-                    <tbody id="debug_rows"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    </section>
-
-    <style>
-        body {
-            margin: 0; padding-bottom: 32px;
-        }
-
-        .rdiv_entries {
-            position: sticky;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: stretch;
-            z-index:9999;
-        }
-
-        .rdiv_fwd{
-            position: sticky;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .rdiv_backward{
-            position: sticky;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .rdiv_lower{
-            position: sticky;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .rdiv_higher{
-            position: sticky;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .debug_area {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: stretch;
-            font-size: 12px;
-            z-index:9999;
-        }
-
-        .button_area {
-            position: sticky;
-            display:flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items:flex-start;
-        }
-
-        .debug_button{
-            flex: 0 0 100px;
-            font-size: 12px;
-            height: 40px;
-            width: 100px;
-            box-sizing: border-box;
-            justify-content: center;
-            align-items:center;
-        }
-        
-
-        .minicon {
-            height: 150px;
-        }
-
-
-
-        .debug_scroll {
-            height: 100px;
-            scrollbar-gutter: stable;
-            overflow: auto;
-        }
-
-        .debug_table {
-            width: 100%;
-            border-collapse:collapse;
-            border-spacing:0;
-            table-layout:fixed;
-            background:white;
-        }
-
-        .debug_table thead th{
-            position: sticky;
-            top: 0;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            z-index: 1
-        }
-
-        .debug_table th, .debug_table td{
-            padding:6px 8px;
-            vertical-align: top;
-            text-align: left;
-            word-break: break-word;
-        }
-
-        .debug_table th{
-            position: sticky;
-            top: 0;
-            text-align: left;
-        }
-    </style>
+        </div> 
     </body>
 
 </html>

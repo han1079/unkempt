@@ -1,0 +1,101 @@
+<!doctype html>        
+<html lang="en">
+
+<head>
+        <link rel="stylesheet" href="./industrial_orange_style.css">
+        <link rel="stylesheet" href="./katex.min.css">
+        <link rel="stylesheet" href="./wireframe.css">
+        <link rel="stylesheet" href="./main_layout.css">
+        <link rel="stylesheet" href="./debug_bar.css">
+        <link rel="stylesheet" href="./rdiv_styles.css">
+
+        <meta charset="utf-8" />
+        <title> Calculators </title>
+        <script src = "https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
+        <script src = "./katex.min.js" defer> </script>
+        <script src = "./util.js" defer></script>
+        <script src = "./ui_state_machine.js" defer> </script>
+        <script src = "./bracketed_newton.js" defer> </script>
+        <script src = "./math_utils.js" defer> </script>
+        <script src = "./res_e_values.js" defer> </script>
+        <script src = "./navigation.js" defer> </script>
+        <script src = "./debug.js" defer></script>
+        <script src = "./buck_conv.js" defer></script>
+        <script src = "./main.js" defer>  </script>
+        <link rel="stylesheet" href="./katex.min.css">
+        <link rel="stylesheet" href="./wireframe.css">
+    </head>
+
+    <body class="x-collapsible">
+
+        <div class="overlay_container">
+            <svg id="overlay_svg" class="overlay_svg"></svg>
+        </div>
+
+        <div class="full_page_container">
+            <div class="top-margin">
+            </div>
+            <!-- 3-column layout wrapper -->
+            <div class="main-layout">
+                <!-- Left spacer (compresses first) -->
+                <div class="left-spacer">
+
+                </div>
+                
+                <!-- Center content area -->
+                <div class="center-content">
+                    <div data-route="home" id="Home">
+                        <div class="page_header">
+                            <h2> Welcome to the Calculator Suite </h2>
+                            <p> Use the navigation bar to select a calculator. More coming soon!</p>
+                        </div>
+                        <div class="Equation">
+                            <p> Generalized Buck Converter Manifold </p>
+                            <p id="b1"></p>
+                            <p id="b2"></p>
+                            <table id="modes">
+                                <tr><th></th><th>Fixed Freq</th><th>Variable Freq</th></tr>
+                                <tr><th>Peak Current</th><th></th><th></th></tr>
+                                <tr><th>On Time</th><th></th><th></th></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+                
+                <!-- Right sidebar (debug area - compresses last) -->
+                <div class="sidebar-container">
+                    <div class="debug_area">
+                        <div class="button_area">
+                            <button class="debug_button" id="Wireframe Toggle">
+                                <p> Wires </p>
+                            </button>
+                        </div>
+
+                        <div class="debug_bar">
+                            <div class="minicon_area">
+                                <table class="contable">
+                                    <tr><th id="minicon">DEFAULT</th></tr>
+                                </table>
+                            </div>
+
+                            <div class="debug_body">
+                                <div class="debug_scroll">
+                                    <table class="debug_table">
+                                        <thead>
+                                            <tr><th>Key</th><th>Value</th></tr>
+                                        </thead>
+                                        <tbody id="debug_rows"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-margin">
+
+            </div>
+        </div> 
+    </body>
+
+</html>

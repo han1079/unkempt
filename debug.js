@@ -1,11 +1,13 @@
+    
 const minicon = document.getElementById("minicon");
 const debug_rows = document.getElementById("debug_rows");
 
-const MouseXY = {x: 0, y: 0, mouseInside: false};
-const nearest = {Nearest: "NONE"};
+
 const debug_objs = [];
 debug_objs.push(MouseXY);
 debug_objs.push(nearest);
+debug_objs.push(XYDisplacement);
+debug_objs.push(currentInput);
 
 function renderDebug() {
     debug_rows.textContent = "";
@@ -27,6 +29,8 @@ function renderDebug() {
         }
     }
 }
+
+on_dt_list.push(renderDebug);
 
 function log(fmt, ...args) {
    minicon.textContent = format(fmt, ...args);
