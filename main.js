@@ -14,7 +14,6 @@ function run_every_frame(list_of_functions) {
 }
 
 function main() {
-    init_inputs();
     run_every_frame(on_dt_list);
 }
 
