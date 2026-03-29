@@ -16,7 +16,8 @@ let strokes = [];
 function renderInk(){
     if (currentUIMode === UIModes.drawing) {
         if (brush_XY.startx === null || brush_XY.starty === null) {
-            throw new Error("Invalid state: starting XY is null on first frame of drawing.");
+            log("Starting outside drawing area")
+            return;
         }
         if (current_stroke === null) {
             // First frame of drawing

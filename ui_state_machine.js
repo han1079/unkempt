@@ -153,6 +153,9 @@ function onPointerUp(ev) {
                 
 
 
+// window.addEventListener("mouseout", (e) => {if (e.relatedTarget === null) {MouseXY.mouseInside = false;}});
+window.addEventListener("click", (e) => {nearest["Nearest"] = e.target.classList;});
+document.getElementById("Wireframe Toggle").addEventListener("click", () => {document.documentElement.classList.toggle("wireframe")});
 window.addEventListener("pointermove", onPointerMove);
 window.addEventListener("pointerdown", onPointerDown);
 window.addEventListener("pointerup", onPointerUp);
