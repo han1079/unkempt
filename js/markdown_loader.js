@@ -1,19 +1,21 @@
 const renderer = new marked.Renderer();
 
-renderer.code = (code, md_lang) => {
-    if (md_lang === "latex") {
-        return katex.renderToString(code, { displayMode: true });
+renderer.code = ({ text, lang }) => {
+    if (lang === "latex") {
+        return katex.renderToString(text, { displayMode: true });
     }
-    if (md_lang === "svg") {
-        return `<div class="svg-demo" data-src="./assets/${code.trim()}.svg"></div>`;
+    if (lang === "svg") {
+        return `<div class="svg-demo" data-src="../assets/${text.trim()}.svg"></div>`;
     }
-    return `<pre><code>${code}</code></pre>`;
+    return `<pre><code>${text}</code></pre>`;
 };
+
+marked.use({ renderer });
 
 async function loadMarkdown(post) {
     const res = await fetch(`../markdown/${post}.md`);
     const markdownText = await res.text();
-    const html = marked.parse(markdownText, { renderer });
+    const html = marked.parse(markdownText);
     document.querySelector(".center-content").innerHTML = html;
 
     document.querySelectorAll(".svg-demo").forEach(async el => {
