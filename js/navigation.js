@@ -15,4 +15,9 @@ function showCurrentHash(current_route) {
     }
 }
 
+function getMarkdownHash(){
+    const pagename = getCurrentRoute()
+    const res = await fetch("./markdown/${pagename}.md")
+    const text = await res.text()
+}
 window.addEventListener("hashchange", switch_to_hash);

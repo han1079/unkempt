@@ -15,6 +15,8 @@ function run_every_frame(list_of_functions) {
 
 function main() {
     run_every_frame(on_dt_list);
+    const post = location.hash.slice(1);
+    if (post) loadMarkdown(post);
 }
 
 
