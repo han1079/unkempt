@@ -7,7 +7,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const key = container?.dataset.rootcontext;
     if (key && ContextRegistry[key]) {
         if (key == "debug") {
-            print("asdf")
         }
         push_context(ContextRegistry[key]);
     }

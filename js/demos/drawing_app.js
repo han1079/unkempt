@@ -2,9 +2,9 @@ const XMLATTR = "http://www.w3.org/2000/svg";
 
 const DrawingRootContext = {
     // Private
-    _path:           [],
+    _path:           null,
     _strokes:        [],
-    _current_stroke: [],
+    _current_stroke: null,
     _draw_data:      "",
 
     on_register(state) {
@@ -95,5 +95,6 @@ const DrawingUpdater = {
 window.addEventListener("DOMContentLoaded", () => {
     register_context("drawing", DrawingRootContext);
     register_updater(DrawingUpdater);
-    register_debug(state.drawing ?? {});
+    register_debug(state.drawing.is_drawing);
+    register_debug(state.drawing.brush_xy ?? {})
 });

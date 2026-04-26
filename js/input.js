@@ -62,4 +62,5 @@ window.addEventListener("DOMContentLoaded", () => {
 
     register_context("input", InputContext);
     register_updater(InputUpdater);
+    register_debug(state.input.pointer ?? {});
 });
