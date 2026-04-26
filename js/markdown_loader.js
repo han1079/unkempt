@@ -1,43 +1,50 @@
-const renderer = new marked.Renderer();
+// ── Marked renderer ───────────────────────────────────────────
+const _renderer = new marked.Renderer();
 
-renderer.code = ({ text, lang }) => {
+_renderer.code = ({ text, lang }) => {
     if (lang === "latex") {
         return katex.renderToString(text, { displayMode: true });
     }
     if (lang === "svg") {
         return `<div class="svg-demo" data-src="../assets/${text.trim()}.svg"></div>`;
     }
+    // Future: widget blocks will be handled here
     return `<pre><code>${text}</code></pre>`;
 };
 
-marked.use({ renderer });
+marked.use({ renderer: _renderer });
 
+// ── Engine (stateless async) ──────────────────────────────────
 async function loadMarkdown(post) {
-    const res = await fetch(`../markdown/${post}.md`);
+    const res          = await fetch(`../markdown/${post}.md`);
     const markdownText = await res.text();
-    const html = marked.parse(markdownText);
-    document.querySelector(".center-content").innerHTML = html;
+    const container    = document.querySelector(".center-content");
+    if (!container) return;
+    container.innerHTML = marked.parse(markdownText);
 
-    document.querySelectorAll(".svg-demo").forEach(async el => {
-        const res = await fetch(el.dataset.src);
-        const svg = await res.text();
-        el.innerHTML = svg;
+    container.querySelectorAll(".svg-demo").forEach(async el => {
+        const svg_res = await fetch(el.dataset.src);
+        el.innerHTML  = await svg_res.text();
     });
 }
 
-function isBlogPage() {
-    return document.querySelector(".center-content[data-blog]") !== null;
-}
+// ── Context ───────────────────────────────────────────────────
+const BlogRootContext = {
+    on_register(state) {
+        state.route ??= location.hash.slice(1) || "home";
+    },
 
-window.addEventListener("hashchange", () => {
-    if (!isBlogPage()) return;
-    const post = location.hash.slice(1);
-    if (post) loadMarkdown(post);
-});
+    on_push(state) {
+        if (state.route) loadMarkdown(state.route);
+    },
+
+    on_event(event, state, _requests) {
+        if (event.type !== "hashchange") return;
+        state.route = event.hash;
+        if (state.route) loadMarkdown(state.route);
+    },
+};
 
 window.addEventListener("DOMContentLoaded", () => {
-    if (!isBlogPage()) return;
-    const post = location.hash.slice(1);
-    if (post) loadMarkdown(post);
+    register_context("blog", BlogRootContext);
 });
-

@@ -1,37 +1,42 @@
-    
-const minicon = document.getElementById("minicon");
-const debug_rows = document.getElementById("debug_rows");
+const DebugContext = {
+    on_event(event, state, _requests) {
+        state.last_event_type ??= "";
+        state.last_event_type = event.type;
+    },
+};
 
+const DebugUpdater = {
+    hooked_state: {
+        get debug_objs() { return _debug_objs; },
+    },
+    on_dt(dt) {
+        const minicon   = document.getElementById("minicon");
+        const debug_rows = document.getElementById("debug_rows");
+        if (!minicon || !debug_rows) return;
 
-const debug_objs = [];
-debug_objs.push(MouseXY);
-debug_objs.push(nearest);
-debug_objs.push(XYDisplacement);
-debug_objs.push(currentInput);
+        minicon.textContent = dt.toFixed(4);
+        debug_rows.textContent = "";
 
-function renderDebug() {
-    debug_rows.textContent = "";
-    for (let i = 0; i< debug_objs.length; i++) {
-        let obj = debug_objs[i];
-        for (const [k,v] of Object.entries(obj)) {
-            const tablerow = document.createElement("tr");
-            const tbldataKey = document.createElement("td");
-            const tbldataVal = document.createElement("td");
-            tbldataKey.textContent = String(k);
-            if (typeof v === "number") {
-                tbldataVal.textContent = String(v.toFixed(2));
-            } else {
-                tbldataVal.textContent = String(v);
+        for (const obj of _debug_objs) {
+            for (const [k, v] of Object.entries(obj)) {
+                const row = document.createElement("tr");
+                const key = document.createElement("td");
+                const val = document.createElement("td");
+                key.textContent = String(k);
+                val.textContent = typeof v === "number" ? v.toFixed(2) : String(v);
+                row.append(key, val);
+                debug_rows.append(row);
             }
-            tablerow.append(tbldataKey);
-            tablerow.append(tbldataVal);
-            debug_rows.append(tablerow);
         }
-    }
+    },
+};
+
+function log(msg) {
+    const minicon = document.getElementById("minicon");
+    if (minicon) minicon.textContent = msg;
 }
 
-on_dt_list.push(renderDebug);
-
-function log(fmt, ...args) {
-   minicon.textContent = format(fmt, ...args);
-}
+window.addEventListener("DOMContentLoaded", () => {
+    register_debug_context(DebugContext);
+    register_updater(DebugUpdater);
+});

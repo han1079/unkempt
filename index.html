@@ -1,7 +1,7 @@
 <!doctype html>        
 <html lang="en">
 
-<head>
+    <head>
         <link rel="stylesheet" href="./css/industrial_orange_style.css">
         <link rel="stylesheet" href="./third_party/katex.min.css">
         <link rel="stylesheet" href="./css/wireframe.css">
@@ -11,20 +11,15 @@
 
         <meta charset="utf-8" />
         <title> Home </title>
-        <script src = "https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
-        <script src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-        <script src = "./js/markdown_loader.js" defer></script>
-        <script src = "./third_party/katex.min.js" defer> </script>
-        <script src = "./js/util.js" defer></script>
-        <script src = "./js/ui_state_machine.js" defer> </script>
-        <script src = "./js/demos/drawing_app.js" defer> </script>
-        <script src = "./js/math/bracketed_newton.js" defer> </script>
-        <script src = "./js/math/math_utils.js" defer> </script>
-        <script src = "./js/demos/rdiv.js" defer> </script>
-        <script src = "./js/demos/res_e_values.js" defer> </script>
-        <script src = "./js/navigation.js" defer> </script>
-        <script src = "./js/debug.js" defer></script>
-        <script src = "./js/main.js" defer>  </script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+        <script src="./third_party/katex.min.js" defer></script>
+        <script src="./js/util.js" defer></script>
+        <script src="./js/scheduler.js" defer></script>
+        <script src="./js/dispatcher.js" defer></script>
+        <script src="./js/debug.js" defer></script>
+        <script src="./js/navigation.js" defer></script>
+        <script src="./js/markdown_loader.js" defer></script>
+        <script src="./js/main.js" defer></script>
         <link rel="stylesheet" href="./third_party/katex.min.css">
         <link rel="stylesheet" href="./css/wireframe.css">
         
@@ -52,12 +47,7 @@
                 </div>
                 
                 <!-- Center content area -->
-                <div class="center-content">
-                    <div class="page_header">
-                        <h2> Welcome to the Calculator Suite </h2>
-                        <p> Use the navigation bar to select a calculator. More coming soon!</p>
-                    </div>
-                </div>
+                <div class="center-content" data-rootcontext="blog"></div>
                 
                 <!-- Right sidebar (debug area - compresses last) -->
                 <div class="sidebar-container">

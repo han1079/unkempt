@@ -11,14 +11,14 @@
 
         <meta charset="utf-8" />
         <title> Resistor Divider </title>
-        <script src = "https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
-        <script src = "../third_party/katex.min.js" defer> </script>
-        <script src = "../js/util.js" defer></script>
-        <script src = "../js/ui_state_machine.js" defer></script>
-        <script src = "../js/demos/rdiv.js" defer> </script>
-        <script src = "../js/demos/res_e_values.js" defer> </script>
-        <script src = "../js/debug.js" defer></script>
-        <script src = "../js/main.js" defer>  </script>
+        <script src="../third_party/katex.min.js" defer></script>
+        <script src="../js/util.js" defer></script>
+        <script src="../js/scheduler.js" defer></script>
+        <script src="../js/dispatcher.js" defer></script>
+        <script src="../js/debug.js" defer></script>
+        <script src="../js/demos/res_e_values.js" defer></script>
+        <script src="../js/demos/rdiv.js" defer></script>
+        <script src="../js/main.js" defer></script>
         <link rel="stylesheet" href="../third_party/katex.min.css">
         <link rel="stylesheet" href="../css/wireframe.css">
         
@@ -48,7 +48,7 @@
                 </div>
                 
                 <!-- Center content area -->
-                <div class="center-content">
+                <div class="center-content" data-rootcontext="rdiv">
                         <div class="page_header">
                             <h3> Resistor Divider Calc</h3>
                             <p> Instructions Here -- </p>
