@@ -1,18 +1,17 @@
 // ── Marked renderer ───────────────────────────────────────────
-const _renderer = new marked.Renderer();
+const _RENDERER = new marked.Renderer();
 
-_renderer.code = ({ text, lang }) => {
+_RENDERER.code = ({ text, lang }) => {
     if (lang === "latex") {
         return katex.renderToString(text, { displayMode: true });
     }
     if (lang === "svg") {
         return `<div class="svg-demo" data-src="../assets/${text.trim()}.svg"></div>`;
     }
-    // Future: widget blocks will be handled here
     return `<pre><code>${text}</code></pre>`;
 };
 
-marked.use({ renderer: _renderer });
+marked.use({ renderer: _RENDERER });
 
 // ── Engine (stateless async) ──────────────────────────────────
 async function loadMarkdown(post) {
@@ -28,23 +27,27 @@ async function loadMarkdown(post) {
     });
 }
 
-// ── Context ───────────────────────────────────────────────────
-const BlogRootContext = {
-    on_register(state) {
-        state.route ??= location.hash.slice(1) || "home";
+// ── Session ───────────────────────────────────────────────────
+const BLOG_ROOT_SESSION = {
+    on_register(_state) {
+        _state.route ??= location.hash.slice(1) || "home";
     },
 
-    on_push(state) {
-        if (state.route) loadMarkdown(state.route);
+    on_push(_state) {
+        if (_state.route) loadMarkdown(_state.route);
     },
 
-    on_event(event, state, _requests) {
+    on_pop(_state) {},
+
+    on_event(event, _state, _requests) {
         if (event.type !== "hashchange") return;
-        state.route = event.hash;
-        if (state.route) loadMarkdown(state.route);
+        _state.route = event.hash;
+        if (_state.route) loadMarkdown(_state.route);
     },
+
+    on_dt(_dt, _state, _requests) {},
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-    register_context("blog", BlogRootContext);
+    register_session("blog", BLOG_ROOT_SESSION);
 });

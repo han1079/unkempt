@@ -1,25 +1,27 @@
-// Inject hashchange into the scheduler event queue
 window.addEventListener("hashchange", () => {
-    _event_queue.push({ type: "hashchange", hash: location.hash.slice(1) });
+    _EVENT_QUEUE.push({ type: "hashchange", hash: location.hash.slice(1) });
 });
 
-// ── Context ───────────────────────────────────────────────────
-const NavigationContext = {
-    on_register(state) {
-        state.route ??= location.hash.slice(1) || "home";
+// ── Session ───────────────────────────────────────────────────
+const NAVIGATION_SESSION = {
+    on_register(_state) {
+        _state.route ??= location.hash.slice(1) || "home";
     },
 
-    on_push(state) {
-        // Sync initial route on push in case hash was set before context loaded
-        state.route = location.hash.slice(1) || "home";
-        _show_route(state.route);
+    on_push(_state) {
+        _state.route = location.hash.slice(1) || "home";
+        _show_route(_state.route);
     },
 
-    on_event(event, state, _requests) {
+    on_pop(_state) {},
+
+    on_event(event, _state, _requests) {
         if (event.type !== "hashchange") return;
-        state.route = event.hash || "home";
-        _show_route(state.route);
+        _state.route = event.hash || "home";
+        _show_route(_state.route);
     },
+
+    on_dt(_dt, _state, _requests) {},
 };
 
 function _show_route(route) {
@@ -29,5 +31,5 @@ function _show_route(route) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    register_context("navigation", NavigationContext);
+    register_session("navigation", NAVIGATION_SESSION);
 });

@@ -1,26 +1,48 @@
-const ContextRegistry = {};
-const _context_stack  = [];
-let   _debug_context  = null;
+const SESSION_REGISTRY = {};
+const _SESSION_STACK   = [];
+let   _DEBUG_SESSION   = null;
 
-const state = {
+const GLOBAL_STATE = {
     stack_height: 0,
 };
 
-// ── Registration ──────────────────────────────────────────────
-function register_context(name, ctx) {
-    ContextRegistry[name] = ctx;
-    if (ctx.on_register) ctx.on_register(state);
+const _UPDATER_LIST = [];
+const _DEBUG_OBJS   = [];
+
+// ── Updater registration ──────────────────────────────────────
+function register_updater(updater) {
+    if (!updater.on_dt) throw new Error("Updater must implement on_dt");
+    _UPDATER_LIST.push(updater);
+    return function() {
+        const i = _UPDATER_LIST.indexOf(updater);
+        if (i !== -1) _UPDATER_LIST.splice(i, 1);
+    };
 }
 
-function register_debug_context(ctx) {
-    _debug_context = ctx;
+// ── Debug object registration ─────────────────────────────────
+function register_debug(obj) {
+    _DEBUG_OBJS.push(obj);
+    return function() {
+        const i = _DEBUG_OBJS.indexOf(obj);
+        if (i !== -1) _DEBUG_OBJS.splice(i, 1);
+    };
+}
+
+// ── Registration ──────────────────────────────────────────────
+function register_session(name, session) {
+    SESSION_REGISTRY[name] = session;
+    if (session.on_register) session.on_register(GLOBAL_STATE);
+}
+
+function register_debug_session(session) {
+    _DEBUG_SESSION = session;
 }
 
 // ── Capability check ──────────────────────────────────────────
-function _can_push(ctx) {
-    if (!ctx.exclusive) return true;
-    for (const cap of ctx.exclusive) {
-        for (const active of _context_stack) {
+function _can_push(session) {
+    if (!session.exclusive) return true;
+    for (const cap of session.exclusive) {
+        for (const active of _SESSION_STACK) {
             if (active.exclusive?.includes(cap)) return false;
         }
     }
@@ -28,40 +50,49 @@ function _can_push(ctx) {
 }
 
 // ── Public stack API ──────────────────────────────────────────
-function push_context(ctx) { _push(ctx); }
-function pop_context(ctx)  { _pop(ctx);  }
+function push_session(session) { _push(session); }
+function pop_session(session)  { _pop(session);  }
 
 // ── Stack operations ──────────────────────────────────────────
-function _push(ctx) {
-    if (!ctx || !_can_push(ctx)) return;
-    _context_stack.push(ctx);
-    state.stack_height += 1;
-    if (ctx.on_push) ctx.on_push(state);
+function _push(session) {
+    if (!session || !_can_push(session)) return;
+    _SESSION_STACK.push(session);
+    GLOBAL_STATE.stack_height += 1;
+    if (session.on_push) session.on_push(GLOBAL_STATE);
 }
 
-function _pop(ctx) {
-    const i = _context_stack.indexOf(ctx);
-    if (i === -1) return;
-    _context_stack.splice(i, 1);
-    state.stack_height -= 1;
-    if (ctx.on_pop) ctx.on_pop(state);
+function _pop(session) {
+    if (_SESSION_STACK.at(-1) !== session) return;
+    _SESSION_STACK.pop();
+    GLOBAL_STATE.stack_height -= 1;
+    if (session.on_pop) session.on_pop(GLOBAL_STATE);
 }
 
 // ── Dispatch ──────────────────────────────────────────────────
-function dispatch(raw, context_stack_request) {
+function dispatch(raw, session_stack_request) {
     const event = {
         ...raw,
-        ingested: { position: false, button: false, keys: {} },
+        muted: { position: false, action: false, keys: {} },
     };
 
-    _debug_context?.on_event(event, state, context_stack_request);
+    _DEBUG_SESSION?.on_event(event, GLOBAL_STATE, session_stack_request);
 
-    for (let i = _context_stack.length - 1; i >= 0; i--) {
-        _context_stack[i].on_event?.(event, state, context_stack_request);
+    for (let i = _SESSION_STACK.length - 1; i >= 0; i--) {
+        _SESSION_STACK[i].on_event?.(event, GLOBAL_STATE, session_stack_request);
     }
 }
 
-function update_context_stack(context_stack_request) {
-    context_stack_request.filter(r => r.pop).forEach(r => _pop(r.pop));
-    context_stack_request.filter(r => r.push).forEach(r => _push(r.push));
+// ── Tick ──────────────────────────────────────────────────────
+function tick_sessions(dt, session_stack_request) {
+    _DEBUG_SESSION?.on_dt?.(dt, GLOBAL_STATE, session_stack_request);
+    for (let i = _SESSION_STACK.length - 1; i >= 0; i--) {
+        _SESSION_STACK[i].on_dt?.(dt, GLOBAL_STATE, session_stack_request);
+    }
+}
+
+// ── Session stack update ──────────────────────────────────────
+function update_session_stack(session_stack_request) {
+    session_stack_request.filter(r => r.pop).forEach(r => _pop(r.pop));
+    const push = session_stack_request.find(r => r.push);
+    if (push) _push(push.push);
 }

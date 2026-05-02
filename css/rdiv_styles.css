@@ -1,24 +1,21 @@
-/* Styles for resistor divider calculator components */
-
 .greyed_out {
     background-color: rgba(189, 188, 188, 0.797) !important;
     text-align: center;
     font-style: italic;
     font-size: 0.7rem;
-    z-index:4000;
+    z-index: 4000;
 }
-
 
 .rdiv_column input[type="number"] {
     width: 60px;
     box-sizing: border-box;
     border: var(--border-width) solid var(--border);
     border-radius: var(--standard-border-radius);
-    padding: 6px 6px;
+    padding: 6px;
     background: var(--bg);
     color: var(--text);
     text-align: center;
-    margin: 0 0;
+    margin: 0;
     vertical-align: middle;
     transition: border-color 0.2s ease;
 }
@@ -43,7 +40,6 @@
     flex-direction: column;
     justify-content: space-around;
     flex: 1;
-    max-width: 1fr;
     text-align: center;
     padding: 10px;
     border: var(--border-width) solid var(--border);
@@ -74,12 +70,11 @@
     color: var(--text);
     font-weight: 600;
     text-align: left;
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     border-bottom: var(--border-width) solid var(--border);
     font-size: 0.9em;
     vertical-align: middle;
 }
-
 
 .rdiv_column button {
     background: var(--accent);
@@ -98,23 +93,3 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(var(--accent), 0.3);
 }
-/* Responsive adjustments */
-/* @media (max-width: 1400px) {
-    .rdiv_entries {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .rdiv_column {
-        min-width: 400px;
-        max-width: none;
-    }
-}
-
-@media (max-width: 900px) {
-    .rdiv_center_content {
-        min-width: 500px;
-        position: relative;
-        z-index:1;
-    }
-} */

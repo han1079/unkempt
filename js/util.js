@@ -1,6 +1,6 @@
 // ── Protocol detection ────────────────────────────────────────
-const isFile      = location.protocol === "file:";
-const isHttp      = location.protocol === "http:" || location.protocol === "https:";
+const IS_FILE      = location.protocol === "file:";
+const IS_HTTP      = location.protocol === "http:" || location.protocol === "https:";
 
 // ── Engine (stateless) ────────────────────────────────────────
 function format(fmt, ...args) {

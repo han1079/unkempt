@@ -14,8 +14,8 @@ function rdiv_calc(data, calc_type) {
     if (calc_type === "rdiv_rh")   data.rh   = _rh;
 }
 
-// ── Context ───────────────────────────────────────────────────
-const RdivRootContext = {
+// ── Session ───────────────────────────────────────────────────
+const RDIV_ROOT_SESSION = {
     _listeners: [],
 
     _data: {
@@ -65,11 +65,16 @@ const RdivRootContext = {
         if (cell) cell.textContent = data.ok ? data[keys[id]].toFixed(2) + " " + units[id] : "NaN";
     },
 
-    on_register(state) {
-        state.rdiv ??= { last_calc: null };
+    on_register(_state) {
+        _state.rdiv ??= { last_calc: null };
     },
 
-    on_push(state) {
+    on_push(_state) {
+        const link = document.createElement("link");
+        link.id   = "rdiv-styles";
+        link.rel  = "stylesheet";
+        link.href = "../css/rdiv_styles.css";
+        document.head.appendChild(link);
         this._render_katex();
         const handler = this._on_click.bind(this);
         ["rdiv_vout_btn", "rdiv_vin_btn", "rdiv_rl_btn", "rdiv_rh_btn"].forEach(id => {
@@ -80,12 +85,16 @@ const RdivRootContext = {
         });
     },
 
-    on_pop(state) {
+    on_pop(_state) {
+        document.getElementById("rdiv-styles")?.remove();
         this._listeners.forEach(({ btn, handler }) => btn.removeEventListener("click", handler));
         this._listeners = [];
     },
+
+    on_event(_event, _state, _requests) {},
+    on_dt(_dt, _state, _requests) {},
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-    register_context("rdiv", RdivRootContext);
+    register_session("rdiv", RDIV_ROOT_SESSION);
 });

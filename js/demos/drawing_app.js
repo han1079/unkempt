@@ -1,20 +1,19 @@
 const XMLATTR = "http://www.w3.org/2000/svg";
 
-const DrawingRootContext = {
-    // Private
+const DRAWING_ROOT_SESSION = {
     _path:           null,
     _strokes:        [],
     _current_stroke: null,
     _draw_data:      "",
 
-    on_register(state) {
-        state.drawing ??= {
+    on_register(_state) {
+        _state.drawing ??= {
             brush_xy:   { startx: 0, starty: 0, x: 0, y: 0 },
             is_drawing: false,
         };
     },
 
-    on_push(state) {
+    on_push(_state) {
         const svg = document.getElementById("drawing_svg");
         if (!svg) return;
         this._path = document.createElementNS(XMLATTR, "path");
@@ -27,74 +26,65 @@ const DrawingRootContext = {
         this._draw_data      = "";
     },
 
-    on_pop(state) {
+    on_pop(_state) {
         this._path?.remove();
-        this._path           = null;
-        state.drawing.is_drawing = false;
+        this._path                = null;
+        _state.drawing.is_drawing = false;
     },
 
-    on_event(event, state, _requests) {
+    on_event(event, _state, _requests) {
         const drawable = document.querySelector(".drawable_area");
         if (!drawable) return;
 
-        if (event.type === "pointerdown" && !event.ingested.button) {
+        if (event.type === "pointerdown" && !event.muted.action) {
             if (event.target === drawable) {
                 const rect = drawable.getBoundingClientRect();
-                state.drawing.brush_xy.startx = event.x - rect.left;
-                state.drawing.brush_xy.starty = event.y - rect.top;
-                state.drawing.brush_xy.x      = state.drawing.brush_xy.startx;
-                state.drawing.brush_xy.y      = state.drawing.brush_xy.starty;
-                state.drawing.is_drawing      = true;
-                event.ingested.button         = true;
+                _state.drawing.brush_xy.startx = event.x - rect.left;
+                _state.drawing.brush_xy.starty = event.y - rect.top;
+                _state.drawing.brush_xy.x      = _state.drawing.brush_xy.startx;
+                _state.drawing.brush_xy.y      = _state.drawing.brush_xy.starty;
+                _state.drawing.is_drawing      = true;
+                event.muted.action             = true;
             }
         }
 
-        if (event.type === "pointermove" && state.drawing.is_drawing) {
+        if (event.type === "pointermove" && _state.drawing.is_drawing) {
             const rect = drawable.getBoundingClientRect();
-            state.drawing.brush_xy.x = event.x - rect.left;
-            state.drawing.brush_xy.y = event.y - rect.top;
-            event.ingested.position  = true;
+            _state.drawing.brush_xy.x = event.x - rect.left;
+            _state.drawing.brush_xy.y = event.y - rect.top;
+            event.muted.position      = true;
         }
 
-        if (event.type === "pointerup" && state.drawing.is_drawing) {
-            state.drawing.is_drawing = false;
-            event.ingested.button    = true;
+        if (event.type === "pointerup" && _state.drawing.is_drawing) {
+            _state.drawing.is_drawing = false;
+            event.muted.action        = true;
         }
     },
-};
 
-const DrawingUpdater = {
-    hooked_state: {
-        get drawing() { return state.drawing; },
-    },
-    on_dt(_dt) {
-        const d = state.drawing;
-        if (!d) return;
-        const ctx = DrawingRootContext;
-        if (!ctx._path) return;
+    on_dt(_dt, _state, _requests) {
+        const d = _state.drawing;
+        if (!d || !this._path) return;
 
         if (d.is_drawing) {
-            if (ctx._current_stroke === null) {
-                ctx._current_stroke = `M ${d.brush_xy.startx} ${d.brush_xy.starty} `;
+            if (this._current_stroke === null) {
+                this._current_stroke = `M ${d.brush_xy.startx} ${d.brush_xy.starty} `;
             } else {
-                ctx._current_stroke += `L ${d.brush_xy.x} ${d.brush_xy.y} `;
-                ctx._draw_data = ctx._strokes.join(" ") + " " + ctx._current_stroke;
-                ctx._path.setAttribute("d", ctx._draw_data);
+                this._current_stroke += `L ${d.brush_xy.x} ${d.brush_xy.y} `;
+                this._draw_data = this._strokes.join(" ") + " " + this._current_stroke;
+                this._path.setAttribute("d", this._draw_data);
             }
         } else {
-            if (ctx._current_stroke !== null) {
-                ctx._strokes.push(ctx._current_stroke);
-                ctx._draw_data = ctx._strokes.join(" ");
-                ctx._path.setAttribute("d", ctx._draw_data);
-                ctx._current_stroke = null;
+            if (this._current_stroke !== null) {
+                this._strokes.push(this._current_stroke);
+                this._draw_data = this._strokes.join(" ");
+                this._path.setAttribute("d", this._draw_data);
+                this._current_stroke = null;
             }
         }
     },
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-    register_context("drawing", DrawingRootContext);
-    register_updater(DrawingUpdater);
-    register_debug(state.drawing.is_drawing);
-    register_debug(state.drawing.brush_xy ?? {})
+    register_session("drawing", DRAWING_ROOT_SESSION);
+    register_debug(GLOBAL_STATE.drawing ?? {});
 });

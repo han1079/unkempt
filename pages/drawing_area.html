@@ -12,25 +12,26 @@
         <script src="../js/scheduler.js" defer></script>
         <script src="../js/dispatcher.js" defer></script>
         <script src="../js/debug.js" defer></script>
-        <script src="../js/input.js" defer></script>
         <script src="../js/demos/drawing_app.js" defer></script>
         <script src="../js/main.js" defer></script>
 </head>
 
 <body class="x-collapsible">
-
+        <div class="overlay_container">
+            <svg id="overlay_svg" class="overlay_svg"></svg>
+        </div>
         <div class="full_page_container">
             <div class="top-margin"></div>
             <div class="main-layout">
                 <div class="left-spacer">
-                    <nav id="nav">
+                    <nav>
                         <a href="../index.html">Home</a>
                         <a href="resistor_divider_page.html">Resistor Divider</a>
                         <a href="drawing_area.html">Drawing Area</a>
                     </nav>
                 </div>
 
-                <div class="center-content" data-rootcontext="drawing">
+                <div class="center-content" data-rootsession="drawing">
                     <div class="drawable_area">
                         <style>
                         .drawable_area {
