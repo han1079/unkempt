@@ -1,0 +1,19 @@
+
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "target": "ES2020",
+        "module": "None",
+        "rootDir": ".",
+        "strict": true,
+        "outFile": "core/core.js"
+    },
+    "files": [
+        "core/util.js",
+        "core/dispatcher.js",
+        "core/scheduler.js",
+        "core/debug.js",
+        "core/markdown_loader.js",
+        "core/navigation.js"
+    ]
+}

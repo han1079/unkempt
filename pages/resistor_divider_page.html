@@ -1,136 +1,116 @@
-<!doctype html>        
+<!doctype html>
 <html lang="en">
-
 <head>
-        <link rel="stylesheet" href="../css/colorscheme.css">
-        <link rel="stylesheet" href="../third_party/katex.min.css">
-        <link rel="stylesheet" href="../css/main_layout.css">
-        <link rel="stylesheet" href="../css/debug_bar.css">
-        <meta charset="utf-8" />
-        <title> Resistor Divider </title>
-        <script src="../third_party/katex.min.js" defer></script>
-        <script src="../js/util.js" defer></script>
-        <script src="../js/scheduler.js" defer></script>
-        <script src="../js/dispatcher.js" defer></script>
-        <script src="../js/debug.js" defer></script>
-        <script src="../js/demos/res_e_values.js" defer></script>
-        <script src="../js/demos/rdiv.js" defer></script>
-        <script src="../js/main.js" defer></script>
-    </head>
-
-    <body class="x-collapsible">
-
-        <div class="overlay_container">
-            <svg id="overlay_svg" class="overlay_svg"></svg>
-        </div>
-
-        <div class="full_page_container">
-            <div class="top-margin">
-            </div>
-            <!-- 3-column layout wrapper -->
-            <div class="main-layout">
-                <!-- Left spacer (compresses first) -->
-                <div class="left-spacer">
-
-                
+    <meta charset="utf-8" />
+    <title>Resistor Divider</title>
+    <link rel="stylesheet" href="../css/colorscheme.css">
+    <link rel="stylesheet" href="../css/main_layout.css">
+    <link rel="stylesheet" href="../css/debug_bar.css">
+    <link rel="stylesheet" href="../third_party/katex.min.css">
+    <link rel="stylesheet" href="../third_party/uPlot.min.css">
+    <script src="../third_party/katex.min.js" defer></script>
+    <script src="../third_party/marked.min.js" defer></script>
+    <script src="../core/core.js" defer></script>
+    <script src="../app/res_e_values.js" defer></script>
+    <script src="../app/rdiv.js" defer></script>
+    <script src="../core/main.js" defer></script>
+</head>
+<body class="x-collapsible">
+    <div class="overlay_container">
+        <svg id="overlay_svg" class="overlay_svg"></svg>
+    </div>
+    <div class="full_page_container">
+        <div class="top-margin"></div>
+        <div class="main-layout">
+            <div class="left-spacer">
                 <nav>
                     <a href="../index.html">Home</a>
+                    <a href="blog.html">Blog</a>
                     <a href="resistor_divider_page.html">Resistor Divider</a>
-                    <a href="drawing_area.html">Drawing Area</a>   
+                    <a href="drawing_area.html">Drawing Area</a>
+                    <a href="input_test.html">Input Test</a>
                 </nav>
-
+            </div>
+            <div class="center-content" data-rootsession="rdiv">
+                <div class="page_header">
+                    <h3>Resistor Divider Calc</h3>
+                    <p>Instructions Here --</p>
                 </div>
-                
-                <!-- Center content area -->
-                <div class="center-content" data-rootsession="rdiv">
-                        <div class="page_header">
-                            <h3> Resistor Divider Calc</h3>
-                            <p> Instructions Here -- </p>
-                        </div>
-                        <div class="rdiv_entries">
-                            <div class="rdiv_column">
-                            <h4><span id="vout_eq"></span>  </h4>
-                                <table id="rdiv_vout_tbl">
-                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
-                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
-                                    <tr><td><span class="vout">Vout</span></td><td class="greyed_out"> </td><td class="vout_result"> N/A </td></tr>
-                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
-                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
-                                </table>
-                                <button id="rdiv_vout_btn">Calculate</button>
-                            </div>
-                            <div class="rdiv_column">
-                                <h4><span id="vin_eq"></span> </h4>
-                                <table id="rdiv_vin_tbl">
-                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
-                                    <tr><td><span class="vin">Vin</span></td><td class="greyed_out"> </td><td class="vin_result"> N/A </td></tr>
-                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="5"></td><td class="vout_result"> None </td></tr>
-                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
-                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
-                                </table>
-                                <button id="rdiv_vin_btn">Calculate</button>
-                            </div>
-                            <div class="rdiv_column">
-                                <h4><span id="rl_eq"></span> </h4>
-                                <table id="rdiv_rl_tbl">
-                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
-                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
-                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result"> None </td></tr>
-                                    <tr><td><span class="rhigh">Rhigh</span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result"> None </td></tr>
-                                    <tr><td><span class="rlow">Rlow</span></td><td class="greyed_out"></td><td class="rlow_result"> N/A </td></tr>
-                                </table>
-                                <button id="rdiv_rl_btn">Calculate</button>
-                            </div>
-                            <div class="rdiv_column">
-                                <h4><span id="rh_eq"></span> </h4>
-                                <table id="rdiv_rh_tbl">
-                                    <tr><th>Val</th><th>Input</th><th>Result</th></tr>
-                                    <tr><td><span class="vin">Vin</span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result"> None </td></tr>
-                                    <tr><td><span class="vout">Vout</span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result"> None </td></tr>
-                                    <tr><td><span class="rhigh">Rhigh</span></td><td class="greyed_out"> </td><td class="rhigh_result"> N/A </td></tr>
-                                    <tr><td><span class="rlow">Rlow</span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result"> None </td></tr>
-                                </table>
-                                <button id="rdiv_rh_btn">Calculate</button>
-                            </div>
-                        </div>
-
-                        
+                <div class="rdiv_entries">
+                    <div class="rdiv_column">
+                        <h4><span id="vout_eq"></span></h4>
+                        <table id="rdiv_vout_tbl">
+                            <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                            <tr><td><span class="vin"></span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result">None</td></tr>
+                            <tr><td><span class="vout"></span></td><td class="greyed_out"></td><td class="vout_result">N/A</td></tr>
+                            <tr><td><span class="rhigh"></span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result">None</td></tr>
+                            <tr><td><span class="rlow"></span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result">None</td></tr>
+                        </table>
+                        <button id="rdiv_vout_btn">Calculate</button>
+                    </div>
+                    <div class="rdiv_column">
+                        <h4><span id="vin_eq"></span></h4>
+                        <table id="rdiv_vin_tbl">
+                            <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                            <tr><td><span class="vin"></span></td><td class="greyed_out"></td><td class="vin_result">N/A</td></tr>
+                            <tr><td><span class="vout"></span></td><td><input type="number" data-key="vout" value="5"></td><td class="vout_result">None</td></tr>
+                            <tr><td><span class="rhigh"></span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result">None</td></tr>
+                            <tr><td><span class="rlow"></span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result">None</td></tr>
+                        </table>
+                        <button id="rdiv_vin_btn">Calculate</button>
+                    </div>
+                    <div class="rdiv_column">
+                        <h4><span id="rl_eq"></span></h4>
+                        <table id="rdiv_rl_tbl">
+                            <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                            <tr><td><span class="vin"></span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result">None</td></tr>
+                            <tr><td><span class="vout"></span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result">None</td></tr>
+                            <tr><td><span class="rhigh"></span></td><td><input type="number" data-key="rhigh" value="2"></td><td class="rhigh_result">None</td></tr>
+                            <tr><td><span class="rlow"></span></td><td class="greyed_out"></td><td class="rlow_result">N/A</td></tr>
+                        </table>
+                        <button id="rdiv_rl_btn">Calculate</button>
+                    </div>
+                    <div class="rdiv_column">
+                        <h4><span id="rh_eq"></span></h4>
+                        <table id="rdiv_rh_tbl">
+                            <tr><th>Val</th><th>Input</th><th>Result</th></tr>
+                            <tr><td><span class="vin"></span></td><td><input type="number" data-key="vin" value="5"></td><td class="vin_result">None</td></tr>
+                            <tr><td><span class="vout"></span></td><td><input type="number" data-key="vout" value="2"></td><td class="vout_result">None</td></tr>
+                            <tr><td><span class="rhigh"></span></td><td class="greyed_out"></td><td class="rhigh_result">N/A</td></tr>
+                            <tr><td><span class="rlow"></span></td><td><input type="number" data-key="rlow" value="2"></td><td class="rlow_result">None</td></tr>
+                        </table>
+                        <button id="rdiv_rh_btn">Calculate</button>
+                    </div>
                 </div>
-                
-                <!-- Right sidebar (debug area - compresses last) -->
-                <div class="sidebar-container">
-                    <div class="debug_area">
-                        <div class="button_area">
-                            <button class="debug_button" id="Wireframe Toggle">
-                                <p> Wires </p>
-                            </button>
+            </div>
+            <div class="sidebar-container">
+                <div class="debug_area">
+                    <div class="button_area">
+                        <button class="debug_button" id="Wireframe Toggle">
+                            <p>Wires</p>
+                        </button>
+                    </div>
+                    <div class="debug_bar">
+                        <div class="minicon_area">
+                            <table class="contable">
+                                <tr><th id="minicon">DEFAULT</th></tr>
+                            </table>
                         </div>
-
-                        <div class="debug_bar">
-                            <div class="minicon_area">
-                                <table class="contable">
-                                    <tr><th id="minicon">DEFAULT</th></tr>
+                        <div class="debug_body">
+                            <div class="debug_scroll">
+                                <table class="debug_table">
+                                    <thead>
+                                        <tr><th>Key</th><th>Value</th></tr>
+                                    </thead>
+                                    <tbody id="debug_rows"></tbody>
                                 </table>
-                            </div>
-
-                            <div class="debug_body">
-                                <div class="debug_scroll">
-                                    <table class="debug_table">
-                                        <thead>
-                                            <tr><th>Key</th><th>Value</th></tr>
-                                        </thead>
-                                        <tbody id="debug_rows"></tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bottom-margin">
-
-            </div>
-        </div> 
-    </body>
-
+        </div>
+        <div class="bottom-margin"></div>
+    </div>
+</body>
 </html>

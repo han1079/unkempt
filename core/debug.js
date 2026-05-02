@@ -75,5 +75,6 @@ function log(msg) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+    register_debug(RAW_INPUT);
     register_debug_session(DEBUG_SESSION);
 });

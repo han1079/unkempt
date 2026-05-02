@@ -1,0 +1,19 @@
+.drawable_area {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: visible;
+    z-index: 1;
+    background-color: rgb(255, 0, 0, 0.2);
+}
+
+.drawing_svg {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: visible;
+    z-index: 2;
+    pointer-events: none;
+}
