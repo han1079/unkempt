@@ -42,7 +42,7 @@ body {
   overflow: visible;
 }
 
-#nav {
+nav {
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
@@ -90,24 +90,3 @@ body {
   z-index:30;
 }
 
-@media (max-width: 300px) {
-  body.x-collapsible .main-layout * {
-      grid-template-columns: minmax(0,300px) 1fr minmax(0,300px) !important;
-  }
-
-  body.x-collapsible .left-spacer * {
-      min-width:0 !important;
-      overflow:hidden !important;
-  }
-
-  body.x-collapsible .center-content * {
-      min-width: 0 !important;
-      overflow: hidden !important;
-  }
-
-  body.x-collapsible .sidebar-container * {
-      min-width: 0 !important;
-      overflow: hidden !important;
-  }
-
-}

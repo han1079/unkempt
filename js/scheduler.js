@@ -54,7 +54,7 @@ window.addEventListener("keyup", e => {
 });
 
 // ── Init ──────────────────────────────────────────────────────
-function init() {
+function start_loop() {
     let last = performance.now();
 
     function frame(now) {
@@ -62,6 +62,7 @@ function init() {
         last = now;
 
         const context_stack_request = [];
+
         while (_event_queue.length > 0) {
             dispatch(_event_queue.shift(), context_stack_request);
         }

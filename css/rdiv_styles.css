@@ -98,11 +98,6 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(var(--accent), 0.3);
 }
-
-.rdiv_center_content {
-    min-width: 0;
-    max-width: 1200px; 
-}
 /* Responsive adjustments */
 /* @media (max-width: 1400px) {
     .rdiv_entries {

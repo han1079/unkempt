@@ -6,8 +6,6 @@
   top: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: auto;
-  align-items: auto;
   font-size: 12px;
   background: var(--accent-bg);
   border: var(--border-width) solid var(--border);
@@ -103,15 +101,3 @@
   color: var(--text);
 }
 
-/* Mobile adjustments */
-/* @media (max-width: 900px) {
-  .debug_area {
-    position: relative;
-    top: auto;
-    max-height: 300px;
-  }
-  
-  .debug_scroll {
-    height: 150px;
-  }
-} */

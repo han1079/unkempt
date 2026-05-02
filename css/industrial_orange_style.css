@@ -1,6 +1,5 @@
 
-body {padding: 20px}
-    @font-face {
+@font-face {
     font-family: "KaTeX_Main";
     src: url("./fonts/KaTeX_Main-Regular.ttf") format("truetype");
     font-weight: 400;
@@ -103,8 +102,6 @@ progress {
 }
 
 html {
-  /* Set the font globally */
-  font-family: var(--sans-font);
   scroll-behavior: smooth;
 }
 
@@ -120,43 +117,6 @@ body {
   padding: 20px 0 0 0; /* Top padding only, sides handled by main_layout.css */
 }
 /* OVERRIDE: body > * grid-column handled by main_layout.css */
-
-/* Make the header bg full width, but the content inline with body */
-body > header {
-  background-color: var(--accent-bg);
-  border-bottom: var(--border-width) solid var(--border);
-  text-align: center;
-  padding: 0 0.5rem 2rem 0.5rem;
-  grid-column: 1 / -1;
-}
-
-body > header > *:only-child {
-  margin-block-start: 2rem;
-}
-
-body > header h1 {
-  max-width: 1200px;
-  margin: 1rem auto;
-}
-
-body > header p {
-  max-width: 40rem;
-  margin: 1rem auto;
-}
-
-/* Add a little padding to ensure spacing is correct between content and header nav */
-main {
-  padding-top: 1.5rem;
-}
-
-body > footer {
-  margin-top: 4rem;
-  padding: 2rem 1rem 1.5rem 1rem;
-  color: var(--text-light);
-  font-size: 0.9rem;
-  text-align: center;
-  border-top: var(--border-width) solid var(--border);
-}
 
 /* Format headers */
 h1 {
@@ -286,68 +246,6 @@ input:enabled:focus-visible:where(
 ) {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
-}
-
-/* Format navigation */
-header nav {
-  font-size: 1rem;
-  line-height: 2;
-  padding: 1rem 0 0 0;
-}
-
-/* Use flexbox to allow items to wrap, as needed */
-header nav ul,
-header nav ol {
-  align-content: space-around;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* List items are inline elements, make them behave more like blocks */
-header nav ul li,
-header nav ol li {
-  display: inline-block;
-}
-
-header nav a,
-header nav a:visited {
-  margin: 0 0.5rem 1rem 0.5rem;
-  border: var(--border-width) solid var(--border);
-  border-radius: var(--standard-border-radius);
-  color: var(--text);
-  display: inline-block;
-  padding: 0.1rem 1rem;
-  text-decoration: none;
-}
-
-header nav a:hover,
-header nav a.current,
-header nav a[aria-current="page"],
-header nav a[aria-current="true"] {
-  background: var(--bg);
-  border-color: var(--accent);
-  color: var(--accent);
-  cursor: pointer;
-}
-
-/* Reduce nav side on mobile */
-@media only screen and (max-width: 720px) {
-  header nav a {
-    border: none;
-    padding: 0;
-    text-decoration: underline;
-    line-height: 1;
-  }
-
-  header nav a.current {
-    background: none;
-  }
 }
 
 /* Consolidate box styling */
