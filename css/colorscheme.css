@@ -1,32 +1,33 @@
 
 @font-face {
     font-family: "KaTeX_Main";
-    src: url("./fonts/KaTeX_Main-Regular.ttf") format("truetype");
+    src: url("../third_party/fonts/KaTeX_Main-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: "KaTeX_Main";
-    src: url("./fonts/KaTeX_Main-Bold.ttf") format("truetype");
+    src: url("../third_party/fonts/KaTeX_Main-Bold.ttf") format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: "KaTeX_Main";
-    src: url("./fonts/KaTeX_Main-Italic.ttf") format("truetype");
+    src: url("../third_party/fonts/KaTeX_Main-Italic.ttf") format("truetype");
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
     font-family: "KaTeX_Main";
-    src: url("./fonts/KaTeX_Main-BoldItalic.ttf") format("truetype");
+    src: url("../third_party/fonts/KaTeX_Main-BoldItalic.ttf") format("truetype");
     font-weight: 700;
     font-style: italic;
 }
-html, body{
+
+html, body {
     font-family: "KaTeX_Main", serif;
 }
 
@@ -34,19 +35,14 @@ button, input, select {
     font-family: inherit;
     font-size: inherit;
 }
-/* Global variables. */
+
+/* Global variables */
 :root {
-  /* Set sans-serif & mono fonts */
   --custom-font: "KaTeX_Main", "Roboto", serif;
-  /* --sans-font: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
-    "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
-    "Helvetica Neue", sans-serif;
-  --serif-font: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace; */
   --standard-border-radius: 5px;
   --border-width: 1px;
 
-  /* Default (light) theme */
+  /* Light theme */
   --bg: #fff;
   --accent-bg: #f5f7ff;
   --text: #212121;
@@ -76,12 +72,9 @@ button, input, select {
     --code: #f06292;
     --preformatted: #ccc;
     --disabled: #111;
-
     --accent-clicked-before: #000dff;
   }
-  /* Add a bit of transparency so light media isn't so glaring in dark mode */
-  img,
-  video {
+  img, video {
     opacity: 0.8;
   }
 }
@@ -92,10 +85,7 @@ button, input, select {
 }
 
 /* Reset default appearance */
-textarea,
-select,
-input,
-progress {
+textarea, select, input, progress {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -105,95 +95,56 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Make the body a nice central block */
-/* NOTE: Body grid layout is overridden by main_layout.css for 3-column layout */
 body {
   color: var(--text);
   background-color: var(--bg);
   font-size: 1.15rem;
   line-height: 1.5;
-  /* OVERRIDE: display and grid-template-columns handled by main_layout.css */
   margin: 0;
-  padding: 20px 0 0 0; /* Top padding only, sides handled by main_layout.css */
+  padding: 20px 0 0 0;
 }
-/* OVERRIDE: body > * grid-column handled by main_layout.css */
 
 /* Format headers */
-h1 {
-  font-size: 2.6rem;
-}
-
-h2 {
-  font-size: 2rem;
-  margin-top: 3rem;
-}
-
-h3 {
-  font-size: 1.6rem;
-  margin-top: 3rem;
-}
-
-h4 {
-  font-size: 1.44rem;
-}
-
-h5 {
-  font-size: 1.15rem;
-}
-
-h6 {
-  font-size: 0.96rem;
-}
+h1 { font-size: 2.6rem; }
+h2 { font-size: 2rem;   margin-top: 3rem; }
+h3 { font-size: 1.6rem; margin-top: 3rem; }
+h4 { font-size: 1.44rem; }
+h5 { font-size: 1.15rem; }
+h6 { font-size: 0.96rem; }
 
 p {
   margin: 1rem 0;
 }
 
-/* Prevent long strings from overflowing container */
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-/* Fix line height when title wraps */
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   line-height: 1.1;
 }
 
-/* Reduce header size on mobile */
 @media only screen and (max-width: 720px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 2.1rem;
-  }
-
-  h3 {
-    font-size: 1.75rem;
-  }
-
-  h4 {
-    font-size: 1.25rem;
-  }
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2.1rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.25rem; }
 }
 
-/* Format links & buttons */
-a,
-a:visited {
+/* Links */
+a, a:visited {
   color: var(--accent);
 }
 
 a:hover {
   text-decoration: none;
-  color: var(--accent-hover)
+  color: var(--accent-hover);
 }
 
+/* Buttons */
 button,
 .button,
-a.button, /* extra specificity to override a */
+a.button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
@@ -205,7 +156,7 @@ input[type="button"] {
   line-height: normal;
 }
 
-.button[aria-disabled="true"], 
+.button[aria-disabled="true"],
 input:disabled,
 textarea:disabled,
 select:disabled,
@@ -220,7 +171,6 @@ input[type="range"] {
   padding: 0;
 }
 
-/* Set the cursor to '?' on an abbreviation and style the abbreviation to show that there is more information underneath */
 abbr[title] {
   cursor: help;
   text-decoration-line: underline;
@@ -248,7 +198,7 @@ input:enabled:focus-visible:where(
   outline-offset: 1px;
 }
 
-/* Consolidate box styling */
+/* Box elements */
 aside, details, pre, progress {
   background-color: var(--accent-bg);
   border: var(--border-width) solid var(--border);
@@ -267,7 +217,6 @@ aside {
   float: left;
 }
 
-/* Make aside full-width on mobile */
 @media only screen and (max-width: 720px) {
   aside {
     width: 100%;
@@ -297,7 +246,6 @@ section {
   margin: 3rem 0;
 }
 
-/* Don't double separators when chaining sections */
 section + section,
 section:first-child {
   border-top: 0;
@@ -325,19 +273,11 @@ summary {
   word-break: break-word;
 }
 
-details[open] > summary + * {
-  margin-top: 0;
-}
+details[open] > summary + * { margin-top: 0; }
+details[open] > summary     { margin-bottom: 0.5rem; }
+details[open] > :last-child  { margin-bottom: 0; }
 
-details[open] > summary {
-  margin-bottom: 0.5rem;
-}
-
-details[open] > :last-child {
-  margin-bottom: 0;
-}
-
-/* Format tables */
+/* Tables */
 table {
   border-collapse: collapse;
   margin: 1.5rem 0;
@@ -348,8 +288,7 @@ figure > table {
   margin: 0;
 }
 
-td,
-th {
+td, th {
   border: var(--border-width) solid var(--border);
   text-align: start;
   padding: 0.1rem;
@@ -361,7 +300,6 @@ th {
 }
 
 tr:nth-child(even) {
-  /* Set every other cell slightly darker. Improves readability. */
   background-color: var(--accent-bg);
 }
 
@@ -370,12 +308,8 @@ table caption {
   margin-bottom: 0.5rem;
 }
 
-/* Format forms */
-textarea,
-select,
-input,
-button,
-.button {
+/* Forms */
+textarea, select, input, button, .button {
   font-size: inherit;
   font-family: inherit;
   padding: 0.5em;
@@ -385,21 +319,21 @@ button,
   max-width: 100%;
   display: inline-block;
 }
-textarea,
-select,
-input {
+
+textarea, select, input {
   color: var(--text);
   background-color: var(--bg);
   border: var(--border-width) solid var(--border);
 }
+
 label {
   display: block;
 }
+
 textarea:not([cols]) {
   width: 100%;
 }
 
-/* Add arrow to drop-down */
 select:not([multiple]) {
   background-image: linear-gradient(45deg, transparent 49%, var(--text) 51%),
     linear-gradient(135deg, var(--text) 51%, transparent 49%);
@@ -412,7 +346,6 @@ select:not([multiple]) {
   background-position: 10px, 15px;
 }
 
-/* checkbox and radio button style */
 input[type="checkbox"],
 input[type="radio"] {
   vertical-align: middle;
@@ -435,7 +368,6 @@ input[type="radio"]:checked {
 }
 
 input[type="checkbox"]:checked::after {
-  /* Creates a rectangle with colored right and bottom borders which is rotated to look like a check mark */
   content: " ";
   width: 0.2em;
   height: 0.4em;
@@ -449,8 +381,8 @@ input[type="checkbox"]:checked::after {
   font-size: 1.8em;
   transform: rotate(45deg);
 }
+
 input[type="radio"]:checked::after {
-  /* creates a colored circle for the checked radio button  */
   content: " ";
   width: 0.3em;
   height: 0.3em;
@@ -462,27 +394,22 @@ input[type="radio"]:checked::after {
   font-size: 1.8em;
 }
 
-/* Makes input fields wider on smaller screens */
 @media only screen and (max-width: 720px) {
-  textarea,
-  select,
-  input {
+  textarea, select, input {
     width: 100%;
   }
 }
 
-/* Set a height for color input */
 input[type="color"] {
   height: 2.5rem;
-  padding:  0.2rem;
+  padding: 0.2rem;
 }
 
-/* do not show border around file selector button */
 input[type="file"] {
   border: 0;
 }
 
-/* Misc body elements */
+/* Misc */
 hr {
   border: none;
   height: var(--border-width);
@@ -501,8 +428,7 @@ mark a {
   color: var(--accent);
 }
 
-img,
-video {
+img, video {
   max-width: 100%;
   height: auto;
   border-radius: var(--standard-border-radius);
@@ -545,10 +471,6 @@ cite {
   font-style: normal;
 }
 
-/* dt {
-    color: var(--text-light);
-} */
-
 kbd {
   color: var(--preformatted);
   border: var(--border-width) solid var(--preformatted);
@@ -564,7 +486,6 @@ pre {
   color: var(--preformatted);
 }
 
-/* Fix embedded code within pre */
 pre code {
   color: var(--preformatted);
   background: none;
@@ -572,9 +493,7 @@ pre code {
   padding: 0;
 }
 
-/* Progress bars */
-/* Declarations are repeated because you */
-/* cannot combine vendor-specific selectors */
+/* Progress */
 progress {
   width: 100%;
 }
@@ -621,22 +540,14 @@ dialog::backdrop {
   }
 }
 
-/* Superscript & Subscript */
-/* Prevent scripts from affecting line-height. */
 sup, sub {
   vertical-align: baseline;
   position: relative;
 }
 
-sup {
-  top: -0.4em;
-}
+sup { top: -0.4em; }
+sub { top:  0.3em; }
 
-sub { 
-  top: 0.3em; 
-}
-
-/* Classes for notices */
 .notice {
   background: var(--accent-bg);
   border: var(--border-width) solid var(--border);
@@ -645,56 +556,26 @@ sub {
   margin: 2rem 0;
 }
 
-div.notice p:first-of-type {
-	margin-top: 0;
-}
-
-div.notice p:last-of-type {
-	margin-bottom: 0;
-}
+div.notice p:first-of-type { margin-top: 0; }
+div.notice p:last-of-type  { margin-bottom: 0; }
 
 /* Print */
 @media print {
-  @page {
-    margin: 1cm;
-  }
-  body {
-    display: block;
-  }
-  body > header {
-    background-color: unset;
-  }
-  body > header nav,
-  body > footer {
-    display: none;
-  }
-  article {
-    border: none;
-    padding: 0;
-  }
-  a[href^="http"]::after {
-    content: " <" attr(href) ">";
-  }
-  abbr[title]:after {
-    content: " (" attr(title) ")";
-  }
-  a {
-    text-decoration: none;
-  }
-  p {
-    widows: 3;
-    orphans: 3;
-  }
-  hr {
-    border-top: var(--border-width) solid var(--border);
-  }
-  mark {
-    border: var(--border-width) solid var(--border);
-  }
-  pre, table, figure, img, svg {
-    break-inside: avoid;
-  }
-  pre code {
-    white-space: pre-wrap;
-  }
-} 
+  @page { margin: 1cm; }
+  body  { display: block; }
+  article { border: none; padding: 0; }
+  a[href^="http"]::after { content: " <" attr(href) ">"; }
+  abbr[title]:after      { content: " (" attr(title) ")"; }
+  a    { text-decoration: none; }
+  p    { widows: 3; orphans: 3; }
+  hr   { border-top: var(--border-width) solid var(--border); }
+  mark { border: var(--border-width) solid var(--border); }
+  pre, table, figure, img, svg { break-inside: avoid; }
+  pre code { white-space: pre-wrap; }
+}
+
+/* Wireframe debug overlay */
+html.wireframe * {
+  outline: 1px solid rgba(255, 0, 0, 0.5) !important;
+  outline-offset: -1px;
+}
