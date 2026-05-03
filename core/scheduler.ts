@@ -1,5 +1,5 @@
-const _EVENT_QUEUE = [];
-const RAW_INPUT = {
+const _EVENT_QUEUE: RawEvent[] = [];
+const RAW_INPUT: RawInput = {
     pointer: { x: 0, y: 0, down: false },
     keys:    {},
 };
@@ -32,27 +32,21 @@ window.addEventListener("keyup", e => {
 });
 
 // ── Loop ──────────────────────────────────────────────────────
-function start_loop() {
+function start_loop(): void {
     let last = performance.now();
 
-    function frame(now) {
+    function frame(now: number): void {
         const dt = (now - last) / 1000;
         last = now;
 
-        const session_stack_request = [];
+        const session_stack_request: SessionRequest[] = [];
 
         while (_EVENT_QUEUE.length > 0) {
-            dispatch(_EVENT_QUEUE.shift(), session_stack_request);
+            dispatch(_EVENT_QUEUE.shift()!, session_stack_request);
         }
 
         tick_sessions(dt, session_stack_request);
-
-        for (let i = 0; i < _UPDATER_LIST.length; i++) {
-            _UPDATER_LIST[i].on_dt(dt, GLOBAL_STATE);
-        }
-
         update_session_stack(session_stack_request);
-
         requestAnimationFrame(frame);
     }
 

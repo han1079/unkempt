@@ -1,41 +1,42 @@
-const CLICK_THRESHOLD_MS = 300;
+const CLICK_THRESHOLD_MS: number = 300;
 
-const WIREFRAME_CLICK_PENDING_SESSION = {
-    on_register(_state) {},
-    on_push(_state) {
+const WIREFRAME_CLICK_PENDING_SESSION: Session = {
+    on_register(_state: GlobalState) {},
+    on_push(_state: GlobalState) {
         _state._wireframe_t = performance.now();
     },
-    on_pop(_state) {
+    on_pop(_state: GlobalState) {
         delete _state._wireframe_t;
     },
-    on_event(event, _state, requests) {
+    on_event(event: DispatchedEvent, _state: GlobalState, requests: SessionRequest[]) {
         if (event.type === "pointerup") {
-            if (performance.now() - _state._wireframe_t < CLICK_THRESHOLD_MS) {
+            if (performance.now() - (_state._wireframe_t as number) < CLICK_THRESHOLD_MS) {
                 document.documentElement.classList.toggle("wireframe");
             }
             event.muted.action = true;
             requests.push({ pop: WIREFRAME_CLICK_PENDING_SESSION });
         }
     },
-    on_dt(_dt, _state, _requests) {},
+    on_dt(_dt: number, _state: GlobalState, _requests: SessionRequest[]) {},
 };
 
-const DEBUG_SESSION = {
-    on_register(_state) {},
-    on_push(_state) {},
-    on_pop(_state) {},
-    on_event(event, _state, requests) {
-        _state.last_event_type = event.type;
+const DEBUG_SESSION: Session = {
+    on_register(_state: GlobalState) {},
+    on_push(_state: GlobalState)     {},
+    on_pop(_state: GlobalState)      {},
 
+    on_event(event: DispatchedEvent, _state: GlobalState, requests: SessionRequest[]) {
+        _state.last_event_type = event.type;
         if (event.type === "pointerdown") {
-            const btn = event.target?.closest("button");
+            const btn = (event.target as Element)?.closest("button");
             if (btn?.id === "Wireframe Toggle") {
                 event.muted.action = true;
                 requests.push({ push: WIREFRAME_CLICK_PENDING_SESSION });
             }
         }
     },
-    on_dt(dt, _state, _requests) {
+
+    on_dt(dt: number, _state: GlobalState, _requests: SessionRequest[]) {
         const minicon    = document.getElementById("minicon");
         const debug_rows = document.getElementById("debug_rows");
         if (!minicon || !debug_rows) return;
@@ -46,7 +47,7 @@ const DEBUG_SESSION = {
         for (const obj of _DEBUG_OBJS) {
             for (const [k, v] of Object.entries(obj)) {
                 if (v !== null && typeof v === "object") {
-                    for (const [k2, v2] of Object.entries(v)) {
+                    for (const [k2, v2] of Object.entries(v as Record<string, unknown>)) {
                         const row = document.createElement("tr");
                         const key = document.createElement("td");
                         const val = document.createElement("td");
@@ -69,7 +70,7 @@ const DEBUG_SESSION = {
     },
 };
 
-function log(msg) {
+function log(msg: string): void {
     const minicon = document.getElementById("minicon");
     if (minicon) minicon.textContent = msg;
 }

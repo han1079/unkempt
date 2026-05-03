@@ -3,17 +3,17 @@ const LOAD_SCREEN_SESSION = {
     _timeout: 0.1,
     _current_timeout: 0.1,
     on_register(_state) {
-        _state.load_screen_opacity ?? (_state.load_screen_opacity = 1);
+        _state.load_screen_opacity ??= 1;
         const el = document.querySelector(".overlay_container");
         if (el)
-            el.style.opacity = 1;
+            el.style.opacity = "1";
     },
     on_push(_state) { },
     on_pop(_state) {
         delete _state.load_screen_opacity;
         const el = document.querySelector(".overlay_container");
         if (el)
-            el.style.opacity = 0;
+            el.style.opacity = "0";
     },
     on_event(_event, _state, _requests) { },
     on_dt(dt, _state, requests) {
@@ -22,7 +22,7 @@ const LOAD_SCREEN_SESSION = {
         _state.load_screen_opacity = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
         const el = document.querySelector(".overlay_container");
         if (el)
-            el.style.opacity = _state.load_screen_opacity;
+            el.style.opacity = String(_state.load_screen_opacity);
         if (_state.load_screen_opacity < 0.01) {
             requests.push({ pop: LOAD_SCREEN_SESSION });
         }
