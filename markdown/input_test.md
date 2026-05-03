@@ -78,20 +78,20 @@ A tile with name, default preset, and a button widget.
 
 ---
 
-## Section 6 — Style Change, Two Columns
+## Section 6 — Left Content, Flex Middle, Frozen Right
 
-A new `text-styling` fence. This starts a new section. Previous style (3-column)
-is replaced. The two Flex columns split remaining space equally.
+Content column on the left takes remaining space, a flex buffer in the middle,
+and a frozen right margin. Tests asymmetric layouts where content is left-anchored.
 
 ```text-styling
-<[20::Frozen]> <[Content::Flex]> <[Content::Flex]> <[20::Frozen]>
+<[Content::Flex]> <[15::Flex]> <[15::Frozen]>
 ```
 
-This prose is now inside the 4-column section. The section div should have
-`grid-template-columns: 20% 1fr 1fr 20%`.
+This prose should sit in the content column on the left. The flex middle column
+acts as a gutter, and the frozen right column is a fixed margin.
 
 **Expected AST:**
-- `StyleNode` (4 columns: 20% frozen, 1fr flex, 1fr flex, 20% frozen)
+- `StyleNode` (3 columns: 1fr content, 15% flex, 15% frozen)
 - `TextNode` (this prose)
 
 ---

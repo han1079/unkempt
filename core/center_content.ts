@@ -7,25 +7,6 @@ const _MOUNTED_TILES: Tile[] = [];
 
 const _RENDERER = new marked.Renderer();
 _RENDERER.code = ({ text, lang: header }: { text: string; header: string }) => {
-    if (!header) return `<pre><code>${text}</code></pre>`;
-
-    console.log(header);
-    const header_tokens = header.split("::");
-    console.log(header_tokens);
-
-    if (header === "latex") {
-        return katex.renderToString(text, { displayMode: true });
-    }
-    if (header === "svg") {
-        return `<div class="svg-demo" data-src="../assets/${text.trim()}.svg"></div>`;
-    }
-    if (header === "tile") {
-        const parsed = parse_code_block(text);
-        return `<div class="tile">${text}</div>`
-    }
-    if (header === "text-styling") {
-        return `<div class="tile">${header}</div>`
-    }
     return `<pre><code>${text}</code></pre>`;
 };
 
@@ -40,11 +21,14 @@ async function loadMarkdown(post: string): Promise<void> {
     const tokens = marked.lexer(markdownText);
     const parsed_nodes = parse_lexer_output(tokens);
 
-    console.log("about to parse")
     container.innerHTML = marked.parse(markdownText);
 
+    let formatter = (text) => `${text}`; 
     for (const n of parsed_nodes) {
-        container.innerHTML += marked.parse(n.raw);
+        if (n.node_type === "style") {
+            formatter = text_style_to_css(n.raw);
+        }
+        container.innerHTML += formatter(marked.parse(n.raw));
     }
     //container.querySelectorAll<HTMLElement>(".svg-demo").forEach(async el => {
     //    const svg_res    = await fetch(el.dataset.src!);

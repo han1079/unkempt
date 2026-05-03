@@ -3633,9 +3633,6 @@ const TileNodePlaceholder = {};
 const TileASTPlaceholder = {};
 let LexerOutput = [];
 let RawLexerOutput = [];
-function parse_code_block(text) {
-    console.log(text);
-}
 function parse_lexer_output(tokens) {
     console.log(tokens);
     const lexer_nodes = [];
@@ -3673,6 +3670,67 @@ function parse_lexer_output(tokens) {
     console.log(LexerOutput);
     console.log(RawLexerOutput);
     return raw_nodes;
+}
+function strip_custom_brackets(tokens) {
+    return [...tokens.matchAll(/<\[([^\]]*)\]>/g).map(m => m[1])];
+}
+function text_style_to_css(raw) {
+    // If it's not a style block, immediately return.
+    if (!raw.includes("text-styling")) {
+        return;
+    }
+    const raw_css_first_wrap = ['<div style="display: grid; grid-template-columns ', '>\\n'];
+    const raw_css_second_wrap = ['<div style="grid-column: ', ';">'];
+    const raw_css_content_suffix = ['</div>\\n</div>'];
+    const tokens = raw.split("\n");
+    const parsed_tokens = [];
+    for (const t of tokens) {
+        if (t.includes("<[") && t.includes("]>")) {
+            parsed_tokens.push(t);
+        }
+    }
+    if (parsed_tokens.length !== 1) {
+        throw new Error("Style code is not formatted properly.");
+    }
+    const tok = strip_custom_brackets(parsed_tokens[0]);
+    const missing_len = (3 - tok.length);
+    for (let i = 0; i < missing_len; i++) {
+        tok.push("");
+    }
+    let stringcmpl = [];
+    let content_idx = 0;
+    let i = 0;
+    console.log(tok);
+    for (const expr of tok) {
+        console.log(expr);
+        if (expr == "") {
+            i++;
+            continue;
+        }
+        if (!expr.includes("Content")) {
+            let split_strings = expr.split("::");
+            console.log(split_strings[1]);
+            if (split_strings[1] === "Frozen") {
+                stringcmpl.push(split_strings[0] + "%");
+            }
+            else if (split_strings[1] === "Flex") {
+                stringcmpl.push("minmax(0," + split_strings[0] + "%)");
+            }
+            else if ({
+                throw: new Error("Style code has incorrect names.")
+            })
+                ;
+        }
+        else {
+            stringcmpl.push("1fr");
+            content_idx = i;
+        }
+        i++;
+    }
+    const grid_layout_string = stringcmpl.join(" ");
+    const string_returner = (text) => `<div style="display: grid; grid-template-columns: ${grid_layout_string};">\n<div style="grid-column: ${content_idx};">${text}</div>\n</div>`;
+    console.log(string_returner("asdf"));
+    return string_returner;
 }
 const IS_FILE = location.protocol === "file:";
 const IS_HTTP = location.protocol === "http:" || location.protocol === "https:";
@@ -3901,24 +3959,6 @@ const TILE_REGISTRY = {};
 const _MOUNTED_TILES = [];
 const _RENDERER = new marked.Renderer();
 _RENDERER.code = ({ text, lang: header }) => {
-    if (!header)
-        return `<pre><code>${text}</code></pre>`;
-    console.log(header);
-    const header_tokens = header.split("::");
-    console.log(header_tokens);
-    if (header === "latex") {
-        return katex.renderToString(text, { displayMode: true });
-    }
-    if (header === "svg") {
-        return `<div class="svg-demo" data-src="../assets/${text.trim()}.svg"></div>`;
-    }
-    if (header === "tile") {
-        const parsed = parse_code_block(text);
-        return `<div class="tile">${text}</div>`;
-    }
-    if (header === "text-styling") {
-        return `<div class="tile">${header}</div>`;
-    }
     return `<pre><code>${text}</code></pre>`;
 };
 marked.use({ renderer: _RENDERER });
@@ -3930,10 +3970,13 @@ async function loadMarkdown(post) {
         return;
     const tokens = marked.lexer(markdownText);
     const parsed_nodes = parse_lexer_output(tokens);
-    console.log("about to parse");
     container.innerHTML = marked.parse(markdownText);
+    let formatter = (text) => `${text}`;
     for (const n of parsed_nodes) {
-        container.innerHTML += marked.parse(n.raw);
+        if (n.node_type === "style") {
+            formatter = text_style_to_css(n.raw);
+        }
+        container.innerHTML += formatter(marked.parse(n.raw));
     }
     //container.querySelectorAll<HTMLElement>(".svg-demo").forEach(async el => {
     //    const svg_res    = await fetch(el.dataset.src!);
