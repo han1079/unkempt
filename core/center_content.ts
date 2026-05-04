@@ -18,18 +18,8 @@ async function loadMarkdown(post: string): Promise<void> {
     const container    = document.querySelector<HTMLElement>(".center-content");
     if (!container) return;
 
-    const tokens = marked.lexer(markdownText);
-    const parsed_nodes = parse_lexer_output(tokens);
 
-    container.innerHTML = marked.parse(markdownText);
-
-    let formatter = (text) => `${text}`; 
-    for (const n of parsed_nodes) {
-        if (n.node_type === "style") {
-            formatter = text_style_to_css(n.raw);
-        }
-        container.innerHTML += formatter(marked.parse(n.raw));
-    }
+    container.innerHTML = compile_markdown(markdownText);
     //container.querySelectorAll<HTMLElement>(".svg-demo").forEach(async el => {
     //    const svg_res    = await fetch(el.dataset.src!);
     //    el.innerHTML     = await svg_res.text();

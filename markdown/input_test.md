@@ -42,13 +42,13 @@ to the `StyleNode` above. The section div generated from this should have
 
 Still inside the same style section. A single full-width tile with no content
 configured. The parser should produce a `TileNode` with `name: null`,
-`preset: null`, `widget: null`, inheriting the current `StyleNode`.
+`preset: null`, `content: null`, inheriting the current `StyleNode`.
 
 ```tile
 ```
 
 **Expected AST (continuing section 2's StyleNode):**
-- `TileNode` (name: null, preset: null, widget: null, config: "")
+- `TileNode` (name: null, preset: null, content: null, config: "")
 
 ---
 
@@ -61,20 +61,20 @@ under the key `"demo_btn"` during pass 1.
 ```
 
 **Expected AST:**
-- `TileNode` (name: "demo_btn", preset: null, widget: null)
+- `TileNode` (name: "demo_btn", preset: null, content: null)
 - `named_tiles["demo_btn"]` should point to this node after pass 1
 
 ---
 
 ## Section 5 — Named Tile With Widget
 
-A tile with name, default preset, and a button widget.
+A tile with name, left alignment preset, and a button content.
 
-```tile::demo_btn_2::|::button
+```tile::demo_btn_2::Left::button
 ```
 
 **Expected AST:**
-- `TileNode` (name: "demo_btn_2", preset: null, widget: "button")
+- `TileNode` (name: "demo_btn_2", alignment: Left, content: "button")
 
 ---
 
@@ -98,15 +98,16 @@ acts as a gutter, and the frozen right column is a fixed margin.
 
 ## Section 7 — Tile Row With Two Buttons
 
-Two buttons side by side inside the 4-column section. The tile layout uses
-`<[-]>` as row separator (only one row here). `<[self]>` is the content slot.
+Two buttons side by side inside the 3-column section. The tile layout uses
+`<[-]>` as row separator (only one row here). Both buttons should fit inside the 
+`<[Content]>` slot.
 The tile is anonymous (no name).
 
 ```tile
 <[button_a]> <[button_b]>
 <[=]>
-button_a: { widget: button, label: "Left" }
-button_b: { widget: button, label: "Right" }
+button_a: { content: button, label: "Left" }
+button_b: { content: button, label: "Right" }
 ```
 
 **Expected AST:**
@@ -124,8 +125,8 @@ cell should produce an empty mount div.
 ```tile
 <[formula]> <[]> <[action_btn]>
 <[=]>
-formula:    { widget: katex,  content: "E = mc^2" }
-action_btn: { widget: button, label: "Compute" }
+formula:    { content: katex,  content: "E = mc^2" }
+action_btn: { content: button, label: "Compute" }
 ```
 
 **Expected AST:**
@@ -144,11 +145,11 @@ The grid for each row is inferred from cell count — 3-column then 2-column.
 <[-]>
 <[btn_d]> <[btn_e]>
 <[=]>
-btn_a: { widget: button, label: "A" }
-btn_b: { widget: button, label: "B" }
-btn_c: { widget: button, label: "C" }
-btn_d: { widget: button, label: "D" }
-btn_e: { widget: button, label: "E" }
+btn_a: { content: button, label: "A" }
+btn_b: { content: button, label: "B" }
+btn_c: { content: button, label: "C" }
+btn_d: { content: button, label: "D" }
+btn_e: { content: button, label: "E" }
 ```
 
 **Expected AST:**
@@ -166,13 +167,13 @@ The content below `<[=]>` fills the self slot.
 ```tile::self_demo
 <[self]>
 <[=]>
-widget: button
+content: button
 label: "I am self"
 ```
 
 **Expected AST:**
 - `TileNode` (name: "self_demo", 1 row × 1 cell, is_self: true)
-- Config section parsed as widget config for the self slot
+- Config section parsed as content config for the self slot
 
 ---
 
@@ -209,7 +210,7 @@ This prose is now back to full width. The section div should have
 
 ---
 
-## Section 13 — Final Tile, Full Width Button
+## Section 13 — Full Width Button
 
 A single full-width button to close out the document.
 
@@ -217,9 +218,24 @@ A single full-width button to close out the document.
 ```
 
 **Expected AST:**
-- `TileNode` (name: null, preset: null, widget: "button")
+- `TileNode` (name: null, preset: null, content: "button")
 
 ---
+
+## Section 14 - Torture Test 
+
+A single tile with subtiles that yields overlapping tiles.
+
+```tile::overlapping::Left::button
+<[self]>       <[vertical::self]>   <[self::rectangle]>         <[rectangle]>
+<===========================================================================>
+<[self]>       <[vertical::self]>   <[self::rectangle]>         <[rectangle]>
+<===========================================================================>
+<[self]>       <[     self     ]>   <[self::rectangle]>         <[rectangle]>
+<===========================================================================>
+<[horizontal]> <[  horizontal  ]>   <[horizontal::rectangle]>   <[rectangle]>
+content: {app: button, label: self};
+```
 
 ## Full Document Expected AST Summary
 
@@ -232,7 +248,7 @@ DocumentAST {
     TextNode   (section 2 prose)
     TileNode   (empty)
     TileNode   (name: demo_btn)
-    TileNode   (name: demo_btn_2, widget: button)
+    TileNode   (name: demo_btn_2, content: button)
     StyleNode  (4-col: 20% 1fr 1fr 20%)
     TextNode   (section 6 prose)
     TileNode   (1×2: button_a, button_b)
@@ -242,7 +258,7 @@ DocumentAST {
     TileNode   (1×1: forward ref demo_btn)
     StyleNode  (1-col: 1fr)
     TextNode   (section 12 prose)
-    TileNode   (widget: button)
+    TileNode   (content: button)
   ]
   named_tiles: {
     demo_btn:    TileNode (section 4)

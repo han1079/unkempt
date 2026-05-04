@@ -58,7 +58,7 @@ type TileRegisterEntry = Record<string, Tile>;
 
 type CellNode = {
     kind: "cell";
-    ref: string | null;
+    names: string[] | null;
     is_self: boolean;
 }
 
@@ -70,10 +70,36 @@ type RowNode = {
 type TileNode = {
     kind: "tile";
     name: string | null;
-    alignment: Record<string, number | string> | null;
+    alignment: Record<string, number> | string | null;
+    vertical_percentage: number | null;
     content: Record<string, string> | null;
-    layout_ref: RowNode[];
-    config: string;
+    layout_ref: RowNode[] | null;
+    subtile: boolean;
+    raw: string;
+}
+
+type CSSRecord = Record<string, (string | number | null)> | null;
+
+type StyleContent = {
+    preset: string | null;
+    raw: string | null;
+    css: CSSRecord;
+}
+
+type StyleNode = {
+    kind: "style";
+    content: StyleContent;
+    formatter: (arg: string) => string;
+}
+
+type TextNode = {
+    kind: "text";
+    raw: string; 
+}
+
+type GenericCodeNode = {
+    kind: "code";
+    raw: string;
 }
 
 type DocumentAST = {
